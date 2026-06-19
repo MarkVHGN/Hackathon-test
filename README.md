@@ -1,4 +1,4 @@
-# � The Synthetic Void 💀
+# 💀 Reverse Turing Detective 💀
 
 A dark, dystopian 2-player detection game where Player 1 answers questions authentically, and Player 2 must identify which responses came from a human mind versus the void of artificial intelligence.
 
