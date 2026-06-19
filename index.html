@@ -12,207 +12,329 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
-            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .container {
             max-width: 700px;
-            margin: 0 auto;
+            width: 100%;
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         h1 {
-            color: #1a73e8;
+            color: #667eea;
             text-align: center;
             margin-bottom: 30px;
-            font-size: 2.2em;
+            font-size: 2.5em;
+            font-weight: 700;
         }
 
         .screen {
             display: none;
+            animation: fadeIn 0.4s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .screen.active {
             display: block;
         }
 
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 2.8em;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
         .instructions {
-            background: #f9f9f9;
-            border-left: 5px solid #1a73e8;
-            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-left: 5px solid #667eea;
+            padding: 25px;
             margin-bottom: 30px;
-            border-radius: 4px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
         }
 
         .instructions h2 {
-            color: #1a73e8;
+            color: #667eea;
             margin-bottom: 15px;
             font-size: 1.3em;
+            font-weight: 600;
         }
 
         .instructions ol {
             margin-left: 20px;
-            color: #555;
+            color: #333;
         }
 
         .instructions li {
             margin-bottom: 12px;
-            line-height: 1.6;
+            line-height: 1.8;
+            font-weight: 500;
         }
 
         .instructions p {
             color: #555;
-            line-height: 1.6;
+            line-height: 1.8;
+            font-size: 1.05em;
         }
 
         .button-group {
             text-align: center;
             margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         button {
-            background-color: #1a73e8;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 14px 32px;
+            padding: 16px 40px;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 1em;
-            font-weight: bold;
-            margin: 10px 10px;
-            transition: background-color 0.3s;
+            font-size: 1.05em;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         button:hover {
-            background-color: #1557b0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        button:active {
+            transform: translateY(0);
         }
 
         button.secondary {
-            background-color: #5f6368;
+            background: linear-gradient(135deg, #a0aec0 0%, #718096 100%);
+            box-shadow: 0 4px 15px rgba(160, 174, 192, 0.4);
         }
 
         button.secondary:hover {
-            background-color: #3c4043;
+            box-shadow: 0 8px 25px rgba(160, 174, 192, 0.6);
         }
 
         .question-input {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            animation: slideIn 0.3s ease-out;
         }
 
         label {
             display: block;
-            color: #333;
-            font-weight: bold;
-            margin-bottom: 8px;
-            font-size: 0.95em;
+            color: #2d3748;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1em;
         }
 
         textarea {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-family: Arial, sans-serif;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: 'Segoe UI', sans-serif;
             font-size: 0.95em;
-            min-height: 50px;
+            min-height: 60px;
             resize: vertical;
             box-sizing: border-box;
+            transition: all 0.3s;
+            background: #f7fafc;
         }
 
         textarea:focus {
             outline: none;
-            border-color: #1a73e8;
-            box-shadow: 0 0 5px rgba(26, 115, 232, 0.3);
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
         }
 
         .progress-container {
-            margin: 20px 0;
+            margin: 30px 0;
+        }
+
+        .progress-label {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 0.95em;
         }
 
         .progress-bar {
             width: 100%;
-            height: 6px;
-            background: #ddd;
-            border-radius: 3px;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 10px;
             overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .progress-fill {
             height: 100%;
-            background: #1a73e8;
-            transition: width 0.3s;
-        }
-
-        .progress-text {
-            color: #666;
-            font-size: 0.9em;
-            margin-top: 8px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.4s ease;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.6);
         }
 
         .question-text {
-            font-size: 1.15em;
-            font-weight: bold;
-            color: #333;
-            margin: 25px 0 20px 0;
+            font-size: 1.25em;
+            font-weight: 600;
+            color: #2d3748;
+            margin: 35px 0 30px 0;
+            line-height: 1.6;
         }
 
         .options-container {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
+            margin-bottom: 30px;
         }
 
         .option {
-            background: #f9f9f9;
-            border: 2px solid #ddd;
-            padding: 16px;
-            border-radius: 4px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e2e8f0 100%);
+            border: 2px solid #cbd5e0;
+            padding: 18px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
             text-align: left;
+            font-weight: 500;
+            color: #2d3748;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .option:hover {
-            border-color: #1a73e8;
-            background: #f0f7ff;
+            border-color: #667eea;
+            background: linear-gradient(135deg, #edf2f7 0%, #e2e8f0 100%);
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
         }
 
         .option.selected {
-            border-color: #1a73e8;
-            background: #e8f1ff;
-            font-weight: bold;
-            color: #1a73e8;
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            transform: translateX(8px);
         }
 
         .score-section {
             text-align: center;
-            padding: 40px 20px;
-        }
-
-        .score-number {
-            font-size: 4em;
-            font-weight: bold;
-            color: #1a73e8;
-            margin: 20px 0;
+            padding: 50px 20px;
+            animation: slideIn 0.5s ease-out;
         }
 
         .score-label {
+            font-size: 1.1em;
+            color: #718096;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .score-number {
+            font-size: 5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 20px 0;
+            animation: scaleIn 0.6s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .score-detail {
             font-size: 1.2em;
-            color: #666;
+            color: #2d3748;
+            font-weight: 600;
         }
 
         .score-details {
-            background: #f9f9f9;
-            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e2e8f0 100%);
+            padding: 25px;
             margin: 30px 0;
-            border-radius: 4px;
-            color: #555;
+            border-radius: 8px;
+            color: #2d3748;
+            font-weight: 500;
+            font-size: 1.05em;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+        }
+
+        @media (max-width: 600px) {
+            .content {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            button {
+                padding: 12px 24px;
+                font-size: 0.95em;
+            }
+
+            .score-number {
+                font-size: 3.5em;
+            }
         }
     </style>
 </head>
@@ -220,75 +342,95 @@
     <div class="container">
         <!-- Start Screen -->
         <div id="startScreen" class="screen active">
-            <h1>🔍 Turing Detective</h1>
-            
-            <div class="instructions">
-                <h2>How to Play</h2>
-                <ol>
-                    <li><strong>Player 1 (Human):</strong> Click "Prepare Game" and answer 10 questions honestly and personally.</li>
-                    <li><strong>Player 2 (Detective):</strong> You'll see each question with 4 answer options - one is the human's real answer, three are AI-generated.</li>
-                    <li><strong>Guess:</strong> For each question, select which answer you think is human.</li>
-                    <li><strong>Score:</strong> After 10 questions, see how many you got correct as a percentage.</li>
-                </ol>
+            <div class="header">
+                <h1>🔍 Turing Detective</h1>
+                <p>Can you spot the human?</p>
             </div>
 
-            <div class="button-group">
-                <button onclick="startSetup()">Prepare Game</button>
+            <div class="content">
+                <div class="instructions">
+                    <h2>How to Play</h2>
+                    <ol>
+                        <li><strong>👤 Player 1 (Human):</strong> Click "Prepare Game" and answer 10 questions honestly and personally.</li>
+                        <li><strong>🕵️ Player 2 (Detective):</strong> You'll see each question with 3 answer options - one is human, two are AI-generated.</li>
+                        <li><strong>💭 Guess:</strong> For each question, select which answer you think came from a real human.</li>
+                        <li><strong>📊 Score:</strong> After 10 questions, see how many you got correct as a percentage.</li>
+                    </ol>
+                </div>
+
+                <div class="button-group">
+                    <button onclick="startSetup()">🚀 Prepare Game</button>
+                </div>
             </div>
         </div>
 
         <!-- Setup Screen (Player 1 enters answers) -->
         <div id="setupScreen" class="screen">
-            <h1>Player 1: Provide Your Answers</h1>
-            
-            <div class="instructions">
-                <p>Answer these 10 questions honestly and in your own words. Your answers will be mixed with AI responses for Player 2 to guess.</p>
+            <div class="header">
+                <h1>👤 Your Answers</h1>
+                <p>Player 1: Be honest and authentic</p>
             </div>
 
-            <form id="answersForm">
-                <div id="answersContainer"></div>
-                
-                <div class="button-group">
-                    <button type="button" onclick="submitAnswers()">Start Game</button>
-                    <button type="button" class="secondary" onclick="goBack()">Back</button>
+            <div class="content">
+                <div class="instructions">
+                    <p>Answer these 10 questions in your own words. Your genuine responses will be mixed with AI-generated answers for Player 2 to challenge.</p>
                 </div>
-            </form>
+
+                <form id="answersForm">
+                    <div id="answersContainer"></div>
+                    
+                    <div class="button-group">
+                        <button type="button" onclick="submitAnswers()">✓ Start Quiz</button>
+                        <button type="button" class="secondary" onclick="goBack()">← Back</button>
+                    </div>
+                </form>
+            </div>
         </div>
 
         <!-- Quiz Screen (Player 2 guesses) -->
         <div id="quizScreen" class="screen">
-            <h1>Player 2: Which is Human?</h1>
-            
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-                <div class="progress-text" id="progressText">Question 1 of 10</div>
+            <div class="header">
+                <h1>🕵️ Detection Mode</h1>
+                <p>Which answer is human?</p>
             </div>
 
-            <div class="question-text" id="questionText"></div>
+            <div class="content">
+                <div class="progress-container">
+                    <div class="progress-label" id="progressText">Question 1 of 10</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
 
-            <div class="options-container" id="optionsContainer"></div>
+                <div class="question-text" id="questionText"></div>
 
-            <div class="button-group">
-                <button onclick="submitGuess()">Submit Answer</button>
+                <div class="options-container" id="optionsContainer"></div>
+
+                <div class="button-group">
+                    <button onclick="submitGuess()">✓ Submit</button>
+                </div>
             </div>
         </div>
 
         <!-- Results Screen -->
         <div id="resultsScreen" class="screen">
-            <h1>Quiz Complete!</h1>
-            
-            <div class="score-section">
-                <div class="score-label">Your Score</div>
-                <div class="score-number" id="scoreNumber">0%</div>
-                <div class="score-label" id="scoreDetail">0 out of 10 correct</div>
+            <div class="header">
+                <h1>🏆 Results</h1>
+                <p>Quiz Complete!</p>
             </div>
 
-            <div class="score-details" id="scoreMessage"></div>
+            <div class="content">
+                <div class="score-section">
+                    <div class="score-label">Your Detection Accuracy</div>
+                    <div class="score-number" id="scoreNumber">0%</div>
+                    <div class="score-detail" id="scoreDetail">0 out of 10 correct</div>
+                </div>
 
-            <div class="button-group">
-                <button onclick="restartGame()">Play Again</button>
+                <div class="score-details" id="scoreMessage"></div>
+
+                <div class="button-group">
+                    <button onclick="restartGame()">🔄 Play Again</button>
+                </div>
             </div>
         </div>
     </div>
