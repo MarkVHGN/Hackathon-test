@@ -393,7 +393,7 @@
                 container.innerHTML = '';
                 selectedAnswer = null;
 
-                ['A', 'B', 'C', 'D'].forEach(letter => {
+                ['A', 'B', 'C'].forEach(letter => {
                     const btn = document.createElement('div');
                     btn.className = 'option';
                     btn.textContent = `${letter}. ${data.options[letter]}`;
