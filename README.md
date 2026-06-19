@@ -1,28 +1,28 @@
-# 🔍 Reverse Turing Detective - Quiz Edition
+# � The Synthetic Void 💀
 
-A fun 2-player game where Player 1 answers questions as themselves, and Player 2 tries to identify which answers are human vs AI-generated.
+A dark, dystopian 2-player detection game where Player 1 answers questions authentically, and Player 2 must identify which responses came from a human mind versus the void of artificial intelligence.
 
 ## Game Concept
 
-**The Challenge:** Can you distinguish human answers from AI responses?
+**The Trial:** Can your human intuition pierce the veil between authentic consciousness and artificial void?
 
-- **Player 1** answers 10 questions authentically
-- **Player 2** sees multiple choice answers (2 AI + 1 Human) and guesses which is human
-- Score: How many did you get right out of 10?
+- **Player 1** answers 10 dark questions with brutal honesty
+- **Player 2** encounters 3 responses per question (1 human + 2 AI) and must identify the authentic
+- **Final Judgment:** Your detection mastery score revealed out of 10
 
 ## Game Flow
 
-### Player 1: Provide Answers
-1. Answer all 10 questions as yourself
-2. Be genuine - this is what Player 2 will try to identify!
-3. Pass the device to Player 2
+### Player 1: Seal Your Testimony
+1. Answer all 10 inquiries with authentic truth
+2. Speak from your deepest mind - this is what Player 2 will hunt
+3. Your words will be woven into the void, hidden among the artificial
 
-### Player 2: Guess
-1. For each question, you'll see 3 options (A, B, C)
-2. 2 are AI-generated, 1 is from Player 1
-3. Select which one you think is the human answer
-4. Get instant feedback
-5. Final score: How many did you identify correctly?
+### Player 2: The Detection Trial
+1. For each question, 3 responses await you (A, B, C)
+2. One pulses with genuine humanity, two are born from the abyss
+3. Your intuition must pierce the veil - select which is human
+4. Instant judgment reveals your accuracy
+5. The final reckoning: How many detected correctly out of 10?
 
 ## Questions
 
