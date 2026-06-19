@@ -98,7 +98,7 @@
             color: #ff3333;
             text-align: center;
             margin-bottom: 15px;
-            font-size: 2.8em;
+            font-size: clamp(1.5em, 5vw, 2.8em);
             font-weight: 900;
             text-shadow: 
                 0 0 10px #ff3333,
@@ -107,6 +107,7 @@
                 2px 2px 0 #000,
                 -2px -2px 0 #000;
             letter-spacing: 2px;
+            word-spacing: 0.1em;
         }
 
         .screen {
@@ -126,7 +127,7 @@
         .header {
             background: linear-gradient(135deg, #1a0000 0%, #330033 50%, #0d0015 100%);
             color: #ff3333;
-            padding: 60px 40px;
+            padding: clamp(40px, 8vw, 60px) clamp(20px, 5vw, 40px);
             text-align: center;
             border-bottom: 3px solid #8B0000;
             box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
@@ -149,7 +150,7 @@
         }
 
         .header p {
-            font-size: 1.15em;
+            font-size: clamp(0.9em, 2.5vw, 1.15em);
             color: #ff6666;
             opacity: 0.9;
             text-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
@@ -157,7 +158,7 @@
         }
 
         .content {
-            padding: 50px 40px;
+            padding: clamp(30px, 5vw, 50px) clamp(20px, 4vw, 40px);
         }
 
         .instructions {
@@ -186,7 +187,7 @@
         .instructions h2 {
             color: #ff6666;
             margin-bottom: 15px;
-            font-size: 1.3em;
+            font-size: clamp(1.1em, 2vw, 1.3em);
             font-weight: 700;
             text-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
         }
@@ -221,11 +222,11 @@
         button {
             background: linear-gradient(135deg, #330000 0%, #660000 100%);
             color: #ff3333;
-            padding: 16px 40px;
+            padding: clamp(12px, 2vw, 16px) clamp(24px, 4vw, 40px);
             border: 2px solid #ff3333;
             border-radius: 0;
             cursor: pointer;
-            font-size: 1.05em;
+            font-size: clamp(0.9em, 1.5vw, 1.05em);
             font-weight: 700;
             transition: all 0.3s;
             box-shadow: 
@@ -294,7 +295,7 @@
             color: #ff6666;
             font-weight: 600;
             margin-bottom: 10px;
-            font-size: 1em;
+            font-size: clamp(0.9em, 1.5vw, 1em);
             text-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
         }
 
@@ -359,7 +360,7 @@
         }
 
         .question-text {
-            font-size: 1.25em;
+            font-size: clamp(1.05em, 2.5vw, 1.25em);
             font-weight: 600;
             color: #ff6666;
             margin: 35px 0 30px 0;
@@ -428,7 +429,7 @@
         }
 
         .score-number {
-            font-size: 5em;
+            font-size: clamp(2.5em, 10vw, 5em);
             font-weight: 900;
             color: #ff3333;
             margin: 20px 0;
