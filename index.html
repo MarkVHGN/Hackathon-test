@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reverse Turing Detective</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .start-screen {
+            text-align: center;
+        }
+
+        .start-screen h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .start-screen p {
+            margin-bottom: 15px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .game-screen {
+            display: none;
+        }
+
+        .suspect-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .suspect-card {
+            background: #f5f5f5;
+            border: 3px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .suspect-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .suspect-card.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .suspect-card h3 {
+            margin-bottom: 8px;
+            font-size: 1.2em;
+        }
+
+        .suspect-card .role {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .question-section {
+            margin-bottom: 30px;
+        }
+
+        .question-section h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .questions-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .question-btn {
+            background: white;
+            border: 2px solid #ddd;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+
+        .question-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .question-btn.asked {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .response-box {
+            background: #f9f9f9;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            min-height: 60px;
+        }
+
+        .response-box .suspect-name {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .response-box .response-text {
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn-secondary {
+            background: #ddd;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #ccc;
+        }
+
+        .voting-screen {
+            text-align: center;
+            display: none;
+        }
+
+        .voting-screen h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .result-screen {
+            text-align: center;
+            display: none;
+        }
+
+        .result-box {
+            background: #f5f5f5;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .result-box.correct {
+            background: #d4edda;
+            border: 2px solid #28a745;
+        }
+
+        .result-box.incorrect {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+        }
+
+        .result-box h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .human-reveal {
+            background: white;
+            border: 3px solid #667eea;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .human-reveal h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .human-reveal .name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .human-reveal .role {
+            color: #666;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .suspect-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .turn-indicator {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .turn-indicator.low {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Reverse Turing Detective</h1>
+            <p>Spot the human among the AI</p>
+        </div>
+
+        <div class="content">
+            <!-- Start Screen -->
+            <div id="startScreen" class="start-screen">
+                <h2>Welcome to the Game</h2>
+                <p>One of the five suspects is human. The other four responses are AI-generated.</p>
+                <p>You have 10 turns to ask questions and gather information.</p>
+                <p>Use your intuition to spot who's really human!</p>
+                <button class="btn" onclick="startGame()">Start Game</button>
+            </div>
+
+            <!-- Game Screen -->
+            <div id="gameScreen" class="game-screen">
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-label">Turns Remaining</div>
+                        <div class="stat-value" id="turnsRemaining">10</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Status</div>
+                        <div class="stat-value" id="gameStatus">Ready</div>
+                    </div>
+                </div>
+
+                <div class="suspect-grid" id="suspectGrid"></div>
+
+                <div class="question-section">
+                    <h3>Choose a Question</h3>
+                    <div class="questions-container" id="questionsContainer"></div>
+                </div>
+
+                <div id="responseContainer"></div>
+
+                <div class="controls">
+                    <button class="btn" onclick="proceedToVote()" id="voteBtn" style="display:none;">Cast Your Vote</button>
+                </div>
+            </div>
+
+            <!-- Voting Screen -->
+            <div id="votingScreen" class="voting-screen">
+                <h2>Who is the human?</h2>
+                <p style="margin-bottom: 30px;">Make your final decision:</p>
+                <div class="suspect-grid" id="votingSuspectGrid"></div>
+                <div class="controls">
+                    <button class="btn" onclick="submitVote()" id="submitVoteBtn">Submit Vote</button>
+                    <button class="btn btn-secondary" onclick="backToGame()">Back</button>
+                </div>
+            </div>
+
+            <!-- Result Screen -->
+            <div id="resultScreen" class="result-screen">
+                <div id="resultBox" class="result-box"></div>
+                <div class="human-reveal">
+                    <h4>The Human Was:</h4>
+                    <div class="name" id="humanName"></div>
+                    <div class="role" id="humanRole"></div>
+                </div>
+                <button class="btn" onclick="restartGame()">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api';
+        let currentGame = null;
+        let selectedSuspect = null;
+        let askedQuestions = new Set();
+        let availableQuestions = [];
+
+        // Check if backend is running
+        async function checkBackend() {
+            try {
+                const res = await fetch(`${API_BASE}/questions`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                return res.ok;
+            } catch (error) {
+                return false;
+            }
+        }
+
+        async function startGame() {
+            try {
+                // Check if backend is running
+                const backendRunning = await checkBackend();
+                if (!backendRunning) {
+                    alert('Error: Backend server is not running.\n\nPlease start it with: python game_backend.py\n\nThe server should run on http://localhost:5000');
+                    return;
+                }
+
+                // Fetch available questions first
+                const questionsRes = await fetch(`${API_BASE}/questions`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                if (!questionsRes.ok) {
+                    throw new Error(`Failed to fetch questions: ${questionsRes.status}`);
+                }
+                
+                const questionsData = await questionsRes.json();
+                availableQuestions = questionsData.questions;
+
+                // Start game
+                const res = await fetch(`${API_BASE}/game/start`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                if (!res.ok) {
+                    throw new Error(`Failed to start game: ${res.status}`);
+                }
+                
+                const data = await res.json();
+                
+                currentGame = data;
+                askedQuestions.clear();
+                selectedSuspect = null;
+
+                renderGameScreen();
+            } catch (error) {
+                console.error('Error starting game:', error);
+                alert('Error starting game:\n\n' + error.message + '\n\nMake sure the backend is running on http://localhost:5000');
+            }
+        }
+
+        function renderGameScreen() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('votingScreen').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'none';
+            document.getElementById('gameScreen').style.display = 'block';
+            document.getElementById('voteBtn').style.display = 'none';
+
+            renderSuspects();
+            renderQuestions();
+            updateStats();
+        }
+
+        function renderSuspects() {
+            const grid = document.getElementById('suspectGrid');
+            grid.innerHTML = '';
+
+            currentGame.suspects.forEach(suspect => {
+                const card = document.createElement('div');
+                card.className = 'suspect-card';
+                if (selectedSuspect && selectedSuspect.id === suspect.id) {
+                    card.classList.add('selected');
+                }
+                card.innerHTML = `
+                    <h3>${suspect.name}</h3>
+                    <div class="role">${suspect.role}</div>
+                `;
+                card.onclick = () => selectSuspect(suspect);
+                grid.appendChild(card);
+            });
+        }
+
+        function selectSuspect(suspect) {
+            selectedSuspect = suspect;
+            renderSuspects();
+            document.getElementById('gameStatus').textContent = `Questioning ${suspect.name}`;
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+
+            availableQuestions.forEach(question => {
+                const btn = document.createElement('button');
+                btn.className = 'question-btn';
+                btn.textContent = question;
+                
+                if (askedQuestions.has(question)) {
+                    btn.classList.add('asked');
+                    btn.disabled = true;
+                }
+
+                btn.onclick = () => askQuestion(question);
+                container.appendChild(btn);
+            });
+        }
+
+        async function askQuestion(question) {
+            if (!selectedSuspect) {
+                alert('Please select a suspect first');
+                return;
+            }
+
+            if (currentGame.turns_remaining <= 0) {
+                alert('No turns remaining!');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/game/${currentGame.game_id}/ask`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        suspect_id: selectedSuspect.id,
+                        question: question
+                    })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    askedQuestions.add(question);
+                    currentGame.turns_remaining = data.turns_remaining;
+                    
+                    const responseContainer = document.getElementById('responseContainer');
+                    responseContainer.innerHTML = `
+                        <div class="response-box">
+                            <div class="suspect-name">${data.suspect_name}:</div>
+                            <div class="response-text">"${data.response}"</div>
+                        </div>
+                    `;
+
+                    renderQuestions();
+                    updateStats();
+
+                    if (data.turns_remaining === 0) {
+                        document.getElementById('voteBtn').style.display = 'inline-block';
+                    }
+                } else {
+                    alert('Error: ' + (data.error || res.status));
+                }
+            } catch (error) {
+                console.error('Error asking question:', error);
+                alert('Error asking question:\n\n' + error.message);
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('turnsRemaining').textContent = currentGame.turns_remaining;
+            
+            const turnsElement = document.querySelector('.stat-value');
+            if (currentGame.turns_remaining <= 2) {
+                turnsElement.parentElement.classList.add('low');
+            }
+        }
+
+        function proceedToVote() {
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('votingScreen').style.display = 'block';
+            
+            const grid = document.getElementById('votingSuspectGrid');
+            grid.innerHTML = '';
+            selectedSuspect = null;
+
+            currentGame.suspects.forEach(suspect => {
+                const card = document.createElement('div');
+                card.className = 'suspect-card';
+                card.innerHTML = `
+                    <h3>${suspect.name}</h3>
+                    <div class="role">${suspect.role}</div>
+                `;
+                card.style.cursor = 'pointer';
+                card.onclick = () => {
+                    document.querySelectorAll('#votingSuspectGrid .suspect-card').forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    selectedSuspect = suspect;
+                };
+                grid.appendChild(card);
+            });
+        }
+
+        async function submitVote() {
+            if (!selectedSuspect) {
+                alert('Please select a suspect');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/game/${currentGame.game_id}/vote`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ guess_id: selectedSuspect.id })
+                });
+
+                if (!res.ok) {
+                    throw new Error(`Failed to submit vote: ${res.status}`);
+                }
+
+                const data = await res.json();
+                showResult(data);
+            } catch (error) {
+                console.error('Error submitting vote:', error);
+                alert('Error submitting vote:\n\n' + error.message);
+            }
+        }
+
+        function showResult(data) {
+            document.getElementById('votingScreen').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'block';
+
+            const resultBox = document.getElementById('resultBox');
+            if (data.correct) {
+                resultBox.className = 'result-box correct';
+                resultBox.innerHTML = '<h3>🎉 Correct!</h3><p>You spotted the human!</p>';
+            } else {
+                resultBox.className = 'result-box incorrect';
+                resultBox.innerHTML = `<h3>❌ Incorrect</h3><p>You guessed ${selectedSuspect.name}, but that wasn't right.</p>`;
+            }
+
+            document.getElementById('humanName').textContent = data.human_was.name;
+            document.getElementById('humanRole').textContent = data.human_was.role;
+        }
+
+        function backToGame() {
+            renderGameScreen();
+        }
+
+        function restartGame() {
+            document.getElementById('startScreen').style.display = 'block';
+            document.getElementById('resultScreen').style.display = 'none';
+            startGame();
+        }
+    </script>
+</body>
+</html>
