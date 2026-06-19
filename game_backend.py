@@ -195,8 +195,8 @@ class QuizHandler(BaseHTTPRequestHandler):
         question = QUESTIONS[question_num]
         human_answer = game["human_answers"][str(question_num)]
         
-        # Get 2 random AI answers
-        ai_options = random.sample(AI_RESPONSES[question], 2)
+        # Get 3 random AI answers
+        ai_options = random.sample(AI_RESPONSES[question], 3)
         
         # Create options list with human answer in random position
         options = ai_options + [human_answer]
@@ -204,7 +204,7 @@ class QuizHandler(BaseHTTPRequestHandler):
         
         # Find the correct answer position
         correct_position = options.index(human_answer)
-        correct_letter = chr(65 + correct_position)  # A, B, C
+        correct_letter = chr(65 + correct_position)  # A, B, C, or D
         
         # Store for checking later
         game["current_question"] = {
@@ -219,7 +219,8 @@ class QuizHandler(BaseHTTPRequestHandler):
             "options": {
                 "A": options[0],
                 "B": options[1],
-                "C": options[2]
+                "C": options[2],
+                "D": options[3]
             }
         })
 
