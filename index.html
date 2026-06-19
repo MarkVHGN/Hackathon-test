@@ -4,7 +4,669 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reverse Turing Detective - Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background: linear-gradient(45deg, #0a0e27 0%, #1a0033 50%, #0d0221 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #00ff88;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(0deg, transparent 24%, rgba(255, 0, 255, 0.05) 25%, rgba(255, 0, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 0, 255, 0.05) 75%, rgba(255, 0, 255, 0.05) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(255, 0, 255, 0.05) 25%, rgba(255, 0, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 0, 255, 0.05) 75%, rgba(255, 0, 255, 0.05) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            pointer-events: none;
+            animation: flicker 0.15s infinite;
+            z-index: 1;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.27; }
+            5% { opacity: 0.42; }
+            10% { opacity: 0.27; }
+            15% { opacity: 0.58; }
+            20% { opacity: 0.27; }
+            100% { opacity: 0.27; }
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: linear-gradient(135deg, rgba(10, 14, 39, 0.95) 0%, rgba(26, 0, 51, 0.95) 50%, rgba(13, 2, 33, 0.95) 100%);
+            border-radius: 0;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 136, 0.3),
+                0 0 40px rgba(255, 0, 136, 0.2),
+                inset 0 0 20px rgba(0, 255, 255, 0.1);
+            border: 2px solid;
+            border-image: linear-gradient(135deg, #00ff88 0%, #ff0088 50%, #00ffff 100%) 1;
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(255, 0, 136, 0.1) 100%);
+            border-bottom: 2px solid #00ff88;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #00ff88, transparent);
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100vh); }
+        }
+
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #00ff88;
+            text-shadow: 0 0 10px #00ff88, 0 0 20px #ff0088;
+            letter-spacing: 2px;
+            font-weight: 900;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.8;
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        .content {
+            padding: 40px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .screen {
+            display: none;
+            animation: glitchIn 0.5s ease-in-out;
+        }
+
+        @keyframes glitchIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #00ff88 0%, #00ffff 100%);
+            color: #0a0e27;
+            border: 2px solid #00ff88;
+            padding: 12px 30px;
+            font-size: 1em;
+            font-family: 'Space Mono', monospace;
+            font-weight: bold;
+            border-radius: 0;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 10px 5px;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.8), 0 0 40px rgba(255, 0, 136, 0.5);
+            background: linear-gradient(135deg, #ff0088 0%, #00ffff 100%);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #ff0088 0%, #ff00ff 100%);
+            border-color: #ff0088;
+            color: #0a0e27;
+            box-shadow: 0 0 10px rgba(255, 0, 136, 0.5);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 0 20px rgba(255, 0, 136, 0.8), 0 0 40px rgba(0, 255, 136, 0.5);
+        }
+
+        .btn-option {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 20px;
+            margin: 15px 0;
+            border: 2px solid #00ffff;
+            border-radius: 0;
+            background: rgba(0, 255, 136, 0.05);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+            font-family: 'Space Mono', monospace;
+            color: #00ff88;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+        }
+
+        .btn-option:hover {
+            border-color: #ff0088;
+            background: rgba(255, 0, 136, 0.1);
+            box-shadow: 0 0 20px rgba(255, 0, 136, 0.5);
+            transform: translateX(5px);
+        }
+
+        .btn-option.selected {
+            background: rgba(0, 255, 136, 0.3);
+            border-color: #00ff88;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.8);
+            color: #00ff88;
+            transform: translateX(10px);
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #00ffff;
+            border-radius: 0;
+            font-family: 'Space Mono', monospace;
+            font-size: 1em;
+            min-height: 80px;
+            resize: vertical;
+            background: rgba(0, 255, 136, 0.05);
+            color: #00ff88;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .question-label {
+            font-weight: bold;
+            color: #00ffff;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        .progress {
+            background: rgba(0, 255, 136, 0.1);
+            height: 10px;
+            border-radius: 0;
+            margin: 20px 0;
+            overflow: hidden;
+            border: 1px solid #00ffff;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #00ff88 0%, #00ffff 100%);
+            height: 100%;
+            transition: width 0.3s;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
+        }
+
+        .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #00ff88;
+            text-align: center;
+            margin: 20px 0;
+            text-shadow: 0 0 20px #00ff88, 0 0 40px #ff0088;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        .result-good {
+            color: #00ff88;
+            text-shadow: 0 0 20px #00ff88;
+        }
+
+        .result-bad {
+            color: #ff0088;
+            text-shadow: 0 0 20px #ff0088;
+        }
+
+        .question-number {
+            color: #00ffff;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .instructions {
+            background: rgba(0, 255, 136, 0.05);
+            border-left: 4px solid #00ff88;
+            border: 2px solid #00ffff;
+            border-left: 4px solid #00ff88;
+            padding: 20px;
+            border-radius: 0;
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        }
+
+        .instructions h3 {
+            color: #00ff88;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #00ff88;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            line-height: 1.8;
+            color: #00ffff;
+        }
+
+        #questionText {
+            margin: 30px 0;
+            color: #00ff88;
+            text-shadow: 0 0 10px #00ff88;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3em;
+        }
+
+        .link-section {
+            background: rgba(255, 0, 136, 0.05);
+            border: 2px solid #ff0088;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 0;
+            text-align: center;
+        }
+
+        .link-section a {
+            color: #ff0088;
+            text-decoration: none;
+            text-shadow: 0 0 10px #ff0088;
+            font-weight: bold;
+            border-bottom: 2px solid #ff0088;
+            transition: all 0.3s;
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(255, 0, 136, 0.1);
+            margin-top: 10px;
+        }
+
+        .link-section a:hover {
+            box-shadow: 0 0 20px rgba(255, 0, 136, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .glitch {
+            position: relative;
+            display: inline-block;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch::before {
+            animation: glitch-1 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+            color: #ff0088;
+            z-index: -1;
+        }
+
+        .glitch::after {
+            animation: glitch-2 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite reverse;
+            color: #00ffff;
+            z-index: -2;
+        }
+
+        @keyframes glitch-1 {
+            0% { clip-path: inset(40% 0 61% 0); transform: translate(-2px, -2px); }
+            20% { clip-path: inset(92% 0 1% 0); transform: translate(2px, 2px); }
+            40% { clip-path: inset(43% 0 1% 0); transform: translate(-2px, 2px); }
+            60% { clip-path: inset(25% 0 58% 0); transform: translate(2px, -2px); }
+            80% { clip-path: inset(54% 0 7% 0); transform: translate(-2px, -2px); }
+            100% { clip-path: inset(58% 0 43% 0); transform: translate(2px, 2px); }
+        }
+
+        @keyframes glitch-2 {
+            0% { clip-path: inset(61% 0 40% 0); transform: translate(2px, 2px); }
+            20% { clip-path: inset(1% 0 92% 0); transform: translate(-2px, -2px); }
+            40% { clip-path: inset(1% 0 43% 0); transform: translate(2px, -2px); }
+            60% { clip-path: inset(58% 0 25% 0); transform: translate(-2px, 2px); }
+            80% { clip-path: inset(7% 0 54% 0); transform: translate(2px, 2px); }
+            100% { clip-path: inset(43% 0 58% 0); transform: translate(-2px, -2px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="glitch" data-text="TURING DETECTIVE">🔍 TURING DETECTIVE</h1>
+            <p>[ HUMAN vs AI DETECTION PROTOCOL ]</p>
+        </div>
+
+        <div class="content">
+            <!-- Start Screen -->
+            <div id="startScreen" class="screen active">
+                <div class="instructions">
+                    <h3>>>> INITIALIZATION SEQUENCE</h3>
+                    <p style="margin: 15px 0;">Two players required. Are you ready to begin the detection process?</p>
+                </div>
+                <div class="controls">
+                    <button class="btn" onclick="goToSetup()">▶ START PROTOCOL</button>
+                </div>
+
+                <div class="link-section">
+                    <p>PROJECT BACKGROUND & APPROACH</p>
+                    <a href="#approach" onclick="showApproach()">▶ VIEW HACKATHON CONTEXT</a>
+                </div>
+            </div>
+
+            <!-- Setup Screen (Player 1 enters answers) -->
+            <div id="setupScreen" class="screen">
+                <div class="instructions">
+                    <h3>>>> PLAYER 1: HUMAN INPUT PHASE</h3>
+                    <p style="margin: 15px 0;">Respond authentically to each prompt. Your answers will be analyzed for human characteristics.</p>
+                </div>
+
+                <form id="answersForm">
+                    <div id="answersContainer"></div>
+                    <div class="controls">
+                        <button type="button" class="btn" onclick="startQuiz()">▶ PROCEED TO ANALYSIS</button>
+                        <button type="button" class="btn btn-secondary" onclick="goToStart()">⟲ RETURN</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Quiz Screen (Player 2 guesses) -->
+            <div id="quizScreen" class="screen">
+                <div class="question-number">[ QUERY <span id="questionNum">1</span> / 10 ]</div>
+                <div class="progress">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+
+                <h2 id="questionText"></h2>
+
+                <div id="optionsContainer"></div>
+
+                <div class="controls">
+                    <button class="btn" onclick="submitAnswer()">✓ ANALYZE</button>
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div id="resultsScreen" class="screen">
+                <h2 style="text-align: center; margin-bottom: 30px; color: #00ff88; text-shadow: 0 0 10px #00ff88;">[ DETECTION COMPLETE ]</h2>
+                
+                <div class="score" id="scoreDisplay"></div>
+                <p style="text-align: center; color: #00ffff; margin-bottom: 30px; text-shadow: 0 0 10px #00ffff;">Accuracy: <span id="scoreText"></span>/10 queries correctly identified</p>
+
+                <div id="answersReview" style="margin: 30px 0;"></div>
+
+                <div class="controls">
+                    <button class="btn" onclick="restartGame()">⟲ RESTART</button>
+                </div>
+            </div>
+
+            <!-- Approach Screen -->
+            <div id="approachScreen" class="screen">
+                <div class="instructions" style="background: rgba(255, 0, 136, 0.05); border-color: #ff0088;">
+                    <h3 style="color: #ff0088;">>>> HACKATHON PROJECT DOCUMENTATION</h3>
+                </div>
+
+                <div style="margin: 30px 0; color: #00ffff; line-height: 1.8;">
+                    <h4 style="color: #00ff88; margin-bottom: 15px; text-shadow: 0 0 10px #00ff88;">[ APPROACH ]</h4>
+                    <p>Built a 2-player quiz game where Player 1 provides genuine human responses to 10 existential questions, while Player 2 attempts to distinguish human-generated answers from AI-synthesized alternatives through pattern recognition and linguistic analysis.</p>
+
+                    <h4 style="color: #00ff88; margin: 30px 0 15px; text-shadow: 0 0 10px #00ff88;">[ KEY FAILURES ]</h4>
+                    <ul style="margin-left: 20px;">
+                        <li>Initial assumption that pre-written AI responses alone could serve as "human" responses - ethical and functional flaw</li>
+                        <li>Complex Flask-based architecture incompatible with locked-down corporate network environment</li>
+                        <li>Over-engineered detective game that didn't align with resource constraints</li>
+                    </ul>
+
+                    <h4 style="color: #00ff88; margin: 30px 0 15px; text-shadow: 0 0 10px #00ff88;">[ LEARNINGS ]</h4>
+                    <ul style="margin-left: 20px;">
+                        <li>Pure Python HTTP server eliminates dependency hell - reliability over abstraction</li>
+                        <li>Pivot from complex mechanics to simple, elegant 2-player format increased engagement</li>
+                        <li>Real human input > simulated responses for authentic challenge</li>
+                        <li>Network independence (no external API calls) crucial for edge deployments</li>
+                    </ul>
+
+                    <h4 style="color: #00ff88; margin: 30px 0 15px; text-shadow: 0 0 10px #00ff88;">[ CONTROL ASSESSMENT ]</h4>
+                    <p>High control maintained throughout - iterative design based on user feedback, complete autonomy over architecture decisions, rapid pivots without infrastructure bottlenecks. The shift from Flask to built-in HTTP server demonstrated architectural flexibility and problem-solving under constraints.</p>
+                </div>
+
+                <div class="controls">
+                    <button class="btn btn-secondary" onclick="goToStart()">⟲ BACK TO GAME</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api/quiz';
+        let currentQuiz = null;
+        let questions = [];
+        let selectedAnswer = null;
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function goToStart() {
+            showScreen('startScreen');
+        }
+
+        function goToSetup() {
+            loadQuestions();
+            showScreen('setupScreen');
+        }
+
+        function showApproach() {
+            showScreen('approachScreen');
+        }
+
+        // Load questions on page load
+        async function loadQuestions() {
+            try {
+                const res = await fetch(`${API_BASE}/questions`);
+                const data = await res.json();
+                questions = data.questions;
+                renderSetupScreen();
+            } catch (error) {
+                alert('[ ERROR ] Backend unavailable. Ensure server running on http://localhost:5000');
+            }
+        }
+
+        function renderSetupScreen() {
+            const container = document.getElementById('answersContainer');
+            container.innerHTML = '';
+
+            questions.forEach((q, idx) => {
+                const label = document.createElement('div');
+                label.className = 'question-label';
+                label.textContent = `[${idx + 1}] ${q}`;
+                container.appendChild(label);
+
+                const textarea = document.createElement('textarea');
+                textarea.id = `answer_${idx}`;
+                textarea.placeholder = '> INPUT REQUIRED...';
+                container.appendChild(textarea);
+            });
+        }
+
+        async function startQuiz() {
+            // Collect answers
+            const humanAnswers = {};
+            for (let i = 0; i < questions.length; i++) {
+                const answer = document.getElementById(`answer_${i}`).value.trim();
+                if (!answer) {
+                    alert(`[ ERROR ] Response ${i + 1} cannot be empty`);
+                    return;
+                }
+                humanAnswers[i] = answer;
+            }
+
+            // Start quiz
+            try {
+                const res = await fetch(`${API_BASE}/start`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ human_answers: humanAnswers })
+                });
+                const data = await res.json();
+                currentQuiz = data.quiz_id;
+                loadNextQuestion();
+            } catch (error) {
+                alert('[ ERROR ] Quiz initialization failed: ' + error.message);
+            }
+        }
+
+        async function loadNextQuestion() {
+            try {
+                const res = await fetch(`${API_BASE}/get-question`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ quiz_id: currentQuiz })
+                });
+                const data = await res.json();
+
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+
+                showScreen('quizScreen');
+
+                document.getElementById('questionNum').textContent = data.question_number;
+                document.getElementById('questionText').textContent = `"${data.question}"`;
+
+                const container = document.getElementById('optionsContainer');
+                container.innerHTML = '';
+                selectedAnswer = null;
+
+                ['A', 'B', 'C'].forEach(letter => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'btn-option';
+                    btn.innerHTML = `<strong>[${letter}]</strong> ${data.options[letter]}`;
+                    btn.onclick = () => selectAnswer(letter, btn);
+                    container.appendChild(btn);
+                });
+
+                // Update progress bar
+                const progress = (data.question_number / 10) * 100;
+                document.getElementById('progressBar').style.width = progress + '%';
+            } catch (error) {
+                alert('[ ERROR ] Question loading failed: ' + error.message);
+            }
+        }
+
+        function selectAnswer(letter, element) {
+            document.querySelectorAll('.btn-option').forEach(e => e.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedAnswer = letter;
+        }
+
+        async function submitAnswer() {
+            if (!selectedAnswer) {
+                alert('[ ERROR ] Selection required');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/check-answer`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ quiz_id: currentQuiz, answer: selectedAnswer })
+                });
+                const data = await res.json();
+
+                if (data.is_complete) {
+                    // Store score for results screen
+                    localStorage.setItem(`quiz_${currentQuiz}_score`, data.score);
+                    showResults(data.score);
+                } else {
+                    loadNextQuestion();
+                }
+            } catch (error) {
+                alert('[ ERROR ] Answer submission failed: ' + error.message);
+            }
+        }
+
+        function showResults(finalScore) {
+            showScreen('resultsScreen');
+
+            const scorePercent = Math.round((finalScore / 10) * 100);
+            const className = finalScore >= 7 ? 'result-good' : finalScore >= 5 ? '' : 'result-bad';
+
+            document.getElementById('scoreDisplay').innerHTML = `<span class="${className}">${finalScore}</span>`;
+            document.getElementById('scoreText').textContent = finalScore;
+        }
+
+        function restartGame() {
+            goToStart();
+        }
+
+        // Load on page load
+        window.addEventListener('load', () => {
+            // Don't auto-load questions, wait for user to click start
+        });
+    </script>
+</body>
+</html>
         * {
             margin: 0;
             padding: 0;
