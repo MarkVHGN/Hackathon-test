@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reverse Turing Detective - Quiz</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <title>Turing Detective - Human vs AI Quiz</title>
     <style>
         * {
             margin: 0;
@@ -13,412 +12,292 @@
         }
 
         body {
-            font-family: 'Space Mono', monospace;
-            background: linear-gradient(45deg, #0a0e27 0%, #1a0033 50%, #0d0221 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
             padding: 20px;
-            padding-top: 40px;
-            color: #00ff88;
-            position: relative;
-            overflow-x: hidden;
+            min-height: 100vh;
         }
 
         .container {
-            max-width: 900px;
-            width: 100%;
-            background: linear-gradient(135deg, rgba(10, 14, 39, 0.98) 0%, rgba(26, 0, 51, 0.98) 50%, rgba(13, 2, 33, 0.98) 100%);
-            border-radius: 0;
-            box-shadow: 
-                0 0 20px rgba(0, 255, 136, 0.3),
-                0 0 40px rgba(255, 0, 136, 0.2),
-                inset 0 0 20px rgba(0, 255, 255, 0.1);
-            border: 2px solid;
-            border-image: linear-gradient(135deg, #00ff88 0%, #ff0088 50%, #00ffff 100%) 1;
-            overflow: hidden;
-            position: relative;
-            z-index: 10;
-        }
-
-        .header {
-            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(255, 0, 136, 0.1) 100%);
-            border-bottom: 2px solid #00ff88;
-            padding: 40px 20px;
-            text-align: center;
-            position: relative;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
-            z-index: 3;
-        }
-
-        .header h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            color: #00ff88;
-            text-shadow: 0 0 10px #00ff88, 0 0 20px #ff0088;
-            letter-spacing: 2px;
-            font-weight: 900;
-        }
-
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.8;
-            color: #00ffff;
-            text-shadow: 0 0 10px #00ffff;
-        }
-
-        .content {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
             padding: 40px;
-            position: relative;
-            z-index: 4;
+        }
+
+        h1 {
+            color: #1a73e8;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2em;
         }
 
         .screen {
             display: none;
-            animation: glitchIn 0.5s ease-in-out;
-        }
-
-        @keyframes glitchIn {
-            0% { opacity: 0; transform: translateY(10px); }
-            100% { opacity: 1; transform: translateY(0); }
         }
 
         .screen.active {
             display: block;
         }
 
-        .btn {
-            background: linear-gradient(135deg, #00ff88 0%, #00ffff 100%);
-            color: #0a0e27;
-            border: 2px solid #00ff88;
-            padding: 12px 30px;
-            font-size: 1em;
-            font-family: 'Space Mono', monospace;
-            font-weight: bold;
-            border-radius: 0;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin: 10px 5px;
-            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.8), 0 0 40px rgba(255, 0, 136, 0.5);
-            background: linear-gradient(135deg, #ff0088 0%, #00ffff 100%);
-        }
-
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .btn-secondary {
-            background: linear-gradient(135deg, #ff0088 0%, #ff00ff 100%);
-            border-color: #ff0088;
-            color: #0a0e27;
-            box-shadow: 0 0 10px rgba(255, 0, 136, 0.5);
-        }
-
-        .btn-secondary:hover {
-            box-shadow: 0 0 20px rgba(255, 0, 136, 0.8), 0 0 40px rgba(0, 255, 136, 0.5);
-        }
-
-        .btn-option {
-            display: block;
-            width: 100%;
-            text-align: left;
+        .instructions {
+            background: #f9f9f9;
+            border-left: 5px solid #1a73e8;
             padding: 20px;
-            margin: 15px 0;
-            border: 2px solid #00ffff;
-            border-radius: 0;
-            background: rgba(0, 255, 136, 0.05);
+            margin-bottom: 30px;
+            border-radius: 4px;
+        }
+
+        .instructions h2 {
+            color: #1a73e8;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            color: #555;
+        }
+
+        .instructions li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .instructions p {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .button-group {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        button {
+            background-color: #1a73e8;
+            color: white;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
-            transition: all 0.3s;
             font-size: 1em;
-            font-family: 'Space Mono', monospace;
-            color: #00ff88;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+            font-weight: bold;
+            margin: 10px 10px;
+            transition: background-color 0.3s;
         }
 
-        .btn-option:hover {
-            border-color: #ff0088;
-            background: rgba(255, 0, 136, 0.1);
-            box-shadow: 0 0 20px rgba(255, 0, 136, 0.5);
-            transform: translateX(5px);
+        button:hover {
+            background-color: #1557b0;
         }
 
-        .btn-option.selected {
-            background: rgba(0, 255, 136, 0.3);
-            border-color: #00ff88;
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.8);
-            color: #00ff88;
-            transform: translateX(10px);
+        button.secondary {
+            background-color: #5f6368;
+        }
+
+        button.secondary:hover {
+            background-color: #3c4043;
+        }
+
+        .question-input {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 0.95em;
         }
 
         textarea {
             width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border: 2px solid #00ffff;
-            border-radius: 0;
-            font-family: 'Space Mono', monospace;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: Arial, sans-serif;
             font-size: 0.95em;
-            min-height: 60px;
+            min-height: 50px;
             resize: vertical;
-            background: rgba(0, 255, 136, 0.05);
-            color: #00ff88;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
             box-sizing: border-box;
         }
 
         textarea:focus {
             outline: none;
-            border-color: #00ff88;
-            background: rgba(0, 255, 136, 0.1);
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            border-color: #1a73e8;
+            box-shadow: 0 0 5px rgba(26, 115, 232, 0.3);
         }
 
-        .question-label {
-            font-weight: bold;
-            color: #00ffff;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px #00ffff;
-        }
-
-        .progress {
-            background: rgba(0, 255, 136, 0.1);
-            height: 10px;
-            border-radius: 0;
+        .progress-container {
             margin: 20px 0;
-            overflow: hidden;
-            border: 1px solid #00ffff;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
         }
 
         .progress-bar {
-            background: linear-gradient(90deg, #00ff88 0%, #00ffff 100%);
+            width: 100%;
+            height: 6px;
+            background: #ddd;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
             height: 100%;
+            background: #1a73e8;
             transition: width 0.3s;
-            box-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
         }
 
-        .score {
-            font-size: 3em;
-            font-weight: bold;
-            color: #00ff88;
-            text-align: center;
-            margin: 20px 0;
-            text-shadow: 0 0 20px #00ff88, 0 0 40px #ff0088;
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 2px;
-        }
-
-        .result-good {
-            color: #00ff88;
-            text-shadow: 0 0 20px #00ff88;
-        }
-
-        .result-bad {
-            color: #ff0088;
-            text-shadow: 0 0 20px #ff0088;
-        }
-
-        .question-number {
-            color: #00ffff;
+        .progress-text {
+            color: #666;
             font-size: 0.9em;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px #00ffff;
+            margin-top: 8px;
         }
 
-        .controls {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 30px;
-        }
-
-        .instructions {
-            background: rgba(0, 255, 136, 0.05);
-            border-left: 4px solid #00ff88;
-            border: 2px solid #00ffff;
-            border-left: 4px solid #00ff88;
-            padding: 20px;
-            border-radius: 0;
-            margin-bottom: 20px;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
-        }
-
-        .instructions h3 {
-            color: #00ff88;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px #00ff88;
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        .instructions ol {
-            margin-left: 20px;
-            line-height: 1.8;
-            color: #00ffff;
-        }
-
-        #questionText {
-            margin: 30px 0;
-            color: #00ff88;
-            text-shadow: 0 0 10px #00ff88;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.3em;
-        }
-
-        .link-section {
-            background: rgba(255, 0, 136, 0.05);
-            border: 2px solid #ff0088;
-            padding: 20px;
-            margin-top: 30px;
-            border-radius: 0;
-            text-align: center;
-        }
-
-        .link-section a {
-            color: #ff0088;
-            text-decoration: none;
-            text-shadow: 0 0 10px #ff0088;
+        .question-text {
+            font-size: 1.15em;
             font-weight: bold;
-            border-bottom: 2px solid #ff0088;
-            transition: all 0.3s;
-            display: inline-block;
-            padding: 10px 20px;
-            background: rgba(255, 0, 136, 0.1);
-            margin-top: 10px;
+            color: #333;
+            margin: 25px 0 20px 0;
         }
 
-        .link-section a:hover {
-            box-shadow: 0 0 20px rgba(255, 0, 136, 0.8);
-            transform: translateY(-2px);
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        .glitch {
-            position: relative;
-            display: inline-block;
+        .option {
+            background: #f9f9f9;
+            border: 2px solid #ddd;
+            padding: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .option:hover {
+            border-color: #1a73e8;
+            background: #f0f7ff;
+        }
+
+        .option.selected {
+            border-color: #1a73e8;
+            background: #e8f1ff;
+            font-weight: bold;
+            color: #1a73e8;
+        }
+
+        .score-section {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .score-number {
+            font-size: 4em;
+            font-weight: bold;
+            color: #1a73e8;
+            margin: 20px 0;
+        }
+
+        .score-label {
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .score-details {
+            background: #f9f9f9;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+            color: #555;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1 class="glitch" data-text="TURING DETECTIVE">🔍 TURING DETECTIVE</h1>
-            <p>[ HUMAN vs AI DETECTION PROTOCOL ]</p>
+        <!-- Start Screen -->
+        <div id="startScreen" class="screen active">
+            <h1>🔍 Turing Detective</h1>
+            
+            <div class="instructions">
+                <h2>How to Play</h2>
+                <ol>
+                    <li><strong>Player 1 (Human):</strong> Click "Prepare Game" and answer 10 questions honestly and personally.</li>
+                    <li><strong>Player 2 (Detective):</strong> You'll see each question with 4 answer options - one is the human's real answer, three are AI-generated.</li>
+                    <li><strong>Guess:</strong> For each question, select which answer you think is human.</li>
+                    <li><strong>Score:</strong> After 10 questions, see how many you got correct as a percentage.</li>
+                </ol>
+            </div>
+
+            <div class="button-group">
+                <button onclick="startSetup()">Prepare Game</button>
+            </div>
         </div>
 
-        <div class="content">
-            <!-- Start Screen -->
-            <div id="startScreen" class="screen active">
-                <div class="instructions">
-                    <h3>>>> INITIALIZATION SEQUENCE</h3>
-                    <p style="margin: 15px 0;">Two players required. Are you ready to begin the detection process?</p>
-                </div>
-                <div class="controls">
-                    <button class="btn" onclick="goToSetup()">▶ START PROTOCOL</button>
-                </div>
-
-                <div class="link-section">
-                    <p>PROJECT BACKGROUND & APPROACH</p>
-                    <a href="#approach" onclick="showApproach()">▶ VIEW HACKATHON CONTEXT</a>
-                </div>
+        <!-- Setup Screen (Player 1 enters answers) -->
+        <div id="setupScreen" class="screen">
+            <h1>Player 1: Provide Your Answers</h1>
+            
+            <div class="instructions">
+                <p>Answer these 10 questions honestly and in your own words. Your answers will be mixed with AI responses for Player 2 to guess.</p>
             </div>
 
-            <!-- Setup Screen (Player 1 enters answers) -->
-            <div id="setupScreen" class="screen">
-                <div class="instructions">
-                    <h3>>>> PLAYER 1: HUMAN INPUT PHASE</h3>
-                    <p style="margin: 15px 0;">Respond authentically to each prompt. Your answers will be analyzed for human characteristics.</p>
-                </div>
-
-                <form id="answersForm">
-                    <div id="answersContainer"></div>
-                    <div class="controls">
-                        <button type="button" class="btn" onclick="startQuiz()">▶ PROCEED TO ANALYSIS</button>
-                        <button type="button" class="btn btn-secondary" onclick="goToStart()">⟲ RETURN</button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Quiz Screen (Player 2 guesses) -->
-            <div id="quizScreen" class="screen">
-                <div class="question-number">[ QUERY <span id="questionNum">1</span> / 10 ]</div>
-                <div class="progress">
-                    <div class="progress-bar" id="progressBar"></div>
-                </div>
-
-                <h2 id="questionText"></h2>
-
-                <div id="optionsContainer"></div>
-
-                <div class="controls">
-                    <button class="btn" onclick="submitAnswer()">✓ ANALYZE</button>
-                </div>
-            </div>
-
-            <!-- Results Screen -->
-            <div id="resultsScreen" class="screen">
-                <h2 style="text-align: center; margin-bottom: 30px; color: #00ff88; text-shadow: 0 0 10px #00ff88;">[ DETECTION COMPLETE ]</h2>
+            <form id="answersForm">
+                <div id="answersContainer"></div>
                 
-                <div class="score" id="scoreDisplay"></div>
-                <p style="text-align: center; color: #00ffff; margin-bottom: 30px; text-shadow: 0 0 10px #00ffff;">Accuracy: <span id="scoreText"></span>/10 queries correctly identified</p>
-
-                <div id="answersReview" style="margin: 30px 0;"></div>
-
-                <div class="controls">
-                    <button class="btn" onclick="restartGame()">⟲ RESTART</button>
+                <div class="button-group">
+                    <button type="button" onclick="submitAnswers()">Start Game</button>
+                    <button type="button" class="secondary" onclick="goBack()">Back</button>
                 </div>
+            </form>
+        </div>
+
+        <!-- Quiz Screen (Player 2 guesses) -->
+        <div id="quizScreen" class="screen">
+            <h1>Player 2: Which is Human?</h1>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">Question 1 of 10</div>
             </div>
 
-            <!-- Approach Screen -->
-            <div id="approachScreen" class="screen">
-                <div class="instructions" style="background: rgba(255, 0, 136, 0.05); border-color: #ff0088;">
-                    <h3 style="color: #ff0088;">>>> HACKATHON PROJECT DOCUMENTATION</h3>
-                </div>
+            <div class="question-text" id="questionText"></div>
 
-                <div style="margin: 30px 0; color: #00ffff; line-height: 1.8;">
-                    <h4 style="color: #00ff88; margin-bottom: 15px; text-shadow: 0 0 10px #00ff88;">[ APPROACH ]</h4>
-                    <p>Built a 2-player quiz game where Player 1 provides genuine human responses to 10 existential questions, while Player 2 attempts to distinguish human-generated answers from AI-synthesized alternatives through pattern recognition and linguistic analysis.</p>
+            <div class="options-container" id="optionsContainer"></div>
 
-                    <h4 style="color: #00ff88; margin: 30px 0 15px; text-shadow: 0 0 10px #00ff88;">[ KEY FAILURES ]</h4>
-                    <ul style="margin-left: 20px;">
-                        <li>Initial assumption that pre-written AI responses alone could serve as "human" responses - ethical and functional flaw</li>
-                        <li>Complex Flask-based architecture incompatible with locked-down corporate network environment</li>
-                        <li>Over-engineered detective game that didn't align with resource constraints</li>
-                    </ul>
+            <div class="button-group">
+                <button onclick="submitGuess()">Submit Answer</button>
+            </div>
+        </div>
 
-                    <h4 style="color: #00ff88; margin: 30px 0 15px; text-shadow: 0 0 10px #00ff88;">[ LEARNINGS ]</h4>
-                    <ul style="margin-left: 20px;">
-                        <li>Pure Python HTTP server eliminates dependency hell - reliability over abstraction</li>
-                        <li>Pivot from complex mechanics to simple, elegant 2-player format increased engagement</li>
-                        <li>Real human input > simulated responses for authentic challenge</li>
-                        <li>Network independence (no external API calls) crucial for edge deployments</li>
-                    </ul>
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="screen">
+            <h1>Quiz Complete!</h1>
+            
+            <div class="score-section">
+                <div class="score-label">Your Score</div>
+                <div class="score-number" id="scoreNumber">0%</div>
+                <div class="score-label" id="scoreDetail">0 out of 10 correct</div>
+            </div>
 
-                    <h4 style="color: #00ff88; margin: 30px 0 15px; text-shadow: 0 0 10px #00ff88;">[ CONTROL ASSESSMENT ]</h4>
-                    <p>High control maintained throughout - iterative design based on user feedback, complete autonomy over architecture decisions, rapid pivots without infrastructure bottlenecks. The shift from Flask to built-in HTTP server demonstrated architectural flexibility and problem-solving under constraints.</p>
-                </div>
+            <div class="score-details" id="scoreMessage"></div>
 
-                <div class="controls">
-                    <button class="btn btn-secondary" onclick="goToStart()">⟲ BACK TO GAME</button>
-                </div>
+            <div class="button-group">
+                <button onclick="restartGame()">Play Again</button>
             </div>
         </div>
     </div>
 
     <script>
         const API_BASE = 'http://localhost:5000/api/quiz';
-        let currentQuiz = null;
         let questions = [];
+        let currentQuizId = null;
+        let currentQuestion = 1;
         let selectedAnswer = null;
 
         function showScreen(screenId) {
@@ -427,463 +306,51 @@
             window.scrollTo(0, 0);
         }
 
-        function goToStart() {
-            showScreen('startScreen');
-        }
-
-        function goToSetup() {
-            loadQuestions();
-            showScreen('setupScreen');
-        }
-
-        function showApproach() {
-            showScreen('approachScreen');
-        }
-
-        // Load questions on page load
-        async function loadQuestions() {
+        async function startSetup() {
             try {
                 const res = await fetch(`${API_BASE}/questions`);
                 const data = await res.json();
                 questions = data.questions;
                 renderSetupScreen();
+                showScreen('setupScreen');
             } catch (error) {
-                alert('[ ERROR ] Backend unavailable. Ensure server running on http://localhost:5000');
+                alert('Error loading questions. Make sure the backend is running on http://localhost:5000');
             }
         }
 
         function renderSetupScreen() {
             const container = document.getElementById('answersContainer');
             container.innerHTML = '';
-
-            questions.forEach((q, idx) => {
-                const label = document.createElement('div');
-                label.className = 'question-label';
-                label.textContent = `[${idx + 1}] ${q}`;
-                container.appendChild(label);
-
-                const textarea = document.createElement('textarea');
-                textarea.id = `answer_${idx}`;
-                textarea.placeholder = '> INPUT REQUIRED...';
-                container.appendChild(textarea);
-            });
-        }
-
-        async function startQuiz() {
-            // Collect answers
-            const humanAnswers = {};
-            for (let i = 0; i < questions.length; i++) {
-                const answer = document.getElementById(`answer_${i}`).value.trim();
-                if (!answer) {
-                    alert(`[ ERROR ] Response ${i + 1} cannot be empty`);
-                    return;
-                }
-                humanAnswers[i] = answer;
-            }
-
-            // Start quiz
-            try {
-                const res = await fetch(`${API_BASE}/start`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ human_answers: humanAnswers })
-                });
-                const data = await res.json();
-                currentQuiz = data.quiz_id;
-                loadNextQuestion();
-            } catch (error) {
-                alert('[ ERROR ] Quiz initialization failed: ' + error.message);
-            }
-        }
-
-        async function loadNextQuestion() {
-            try {
-                const res = await fetch(`${API_BASE}/get-question`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ quiz_id: currentQuiz })
-                });
-                const data = await res.json();
-
-                if (data.error) {
-                    alert(data.error);
-                    return;
-                }
-
-                showScreen('quizScreen');
-
-                document.getElementById('questionNum').textContent = data.question_number;
-                document.getElementById('questionText').textContent = `"${data.question}"`;
-
-                const container = document.getElementById('optionsContainer');
-                container.innerHTML = '';
-                selectedAnswer = null;
-
-                ['A', 'B', 'C'].forEach(letter => {
-                    const btn = document.createElement('button');
-                    btn.type = 'button';
-                    btn.className = 'btn-option';
-                    btn.innerHTML = `<strong>[${letter}]</strong> ${data.options[letter]}`;
-                    btn.onclick = () => selectAnswer(letter, btn);
-                    container.appendChild(btn);
-                });
-
-                // Update progress bar
-                const progress = (data.question_number / 10) * 100;
-                document.getElementById('progressBar').style.width = progress + '%';
-            } catch (error) {
-                alert('[ ERROR ] Question loading failed: ' + error.message);
-            }
-        }
-
-        function selectAnswer(letter, element) {
-            document.querySelectorAll('.btn-option').forEach(e => e.classList.remove('selected'));
-            element.classList.add('selected');
-            selectedAnswer = letter;
-        }
-
-        async function submitAnswer() {
-            if (!selectedAnswer) {
-                alert('[ ERROR ] Selection required');
-                return;
-            }
-
-            try {
-                const res = await fetch(`${API_BASE}/check-answer`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ quiz_id: currentQuiz, answer: selectedAnswer })
-                });
-                const data = await res.json();
-
-                if (data.is_complete) {
-                    // Store score for results screen
-                    localStorage.setItem(`quiz_${currentQuiz}_score`, data.score);
-                    showResults(data.score);
-                } else {
-                    loadNextQuestion();
-                }
-            } catch (error) {
-                alert('[ ERROR ] Answer submission failed: ' + error.message);
-            }
-        }
-
-        function showResults(finalScore) {
-            showScreen('resultsScreen');
-
-            const scorePercent = Math.round((finalScore / 10) * 100);
-            const className = finalScore >= 7 ? 'result-good' : finalScore >= 5 ? '' : 'result-bad';
-
-            document.getElementById('scoreDisplay').innerHTML = `<span class="${className}">${finalScore}</span>`;
-            document.getElementById('scoreText').textContent = finalScore;
-        }
-
-        function restartGame() {
-            goToStart();
-        }
-
-        // Load on page load
-        window.addEventListener('load', () => {
-            // Don't auto-load questions, wait for user to click start
-        });
-    </script>
-</body>
-</html>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 900px;
-            width: 100%;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-
-        .content {
-            padding: 40px;
-        }
-
-        .screen {
-            display: none;
-        }
-
-        .screen.active {
-            display: block;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            font-size: 1em;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin: 10px 5px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-secondary {
-            background: #ddd;
-            color: #333;
-        }
-
-        .btn-secondary:hover {
-            background: #ccc;
-        }
-
-        .btn-option {
-            display: block;
-            width: 100%;
-            text-align: left;
-            padding: 20px;
-            margin: 15px 0;
-            border: 3px solid #ddd;
-            border-radius: 10px;
-            background: white;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 1em;
-        }
-
-        .btn-option:hover {
-            border-color: #667eea;
-            background: #f9f9f9;
-        }
-
-        .btn-option.selected {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-
-        textarea {
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-family: 'Segoe UI', sans-serif;
-            font-size: 1em;
-            min-height: 80px;
-            resize: vertical;
-        }
-
-        textarea:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .question-label {
-            font-weight: bold;
-            color: #333;
-            margin-top: 20px;
-            margin-bottom: 10px;
-        }
-
-        .progress {
-            background: #f0f0f0;
-            height: 10px;
-            border-radius: 5px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            height: 100%;
-            transition: width 0.3s;
-        }
-
-        .score {
-            font-size: 2em;
-            font-weight: bold;
-            color: #667eea;
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .result-good {
-            color: #28a745;
-        }
-
-        .result-bad {
-            color: #dc3545;
-        }
-
-        .question-number {
-            color: #999;
-            font-size: 0.9em;
-            margin-bottom: 20px;
-        }
-
-        .controls {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 30px;
-        }
-
-        .instructions {
-            background: #f0f8ff;
-            border-left: 4px solid #667eea;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .instructions h3 {
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-
-        .instructions ol {
-            margin-left: 20px;
-            line-height: 1.8;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🔍 Reverse Turing Detective</h1>
-            <p>Quiz Edition: Spot the Human Answers</p>
-        </div>
-
-        <div class="content">
-            <!-- Start Screen (Player 1 enters answers) -->
-            <div id="setupScreen" class="screen active">
-                <div class="instructions">
-                    <h3>📝 Player 1: Enter Your Answers</h3>
-                    <p>Player 1, answer these 10 questions. Then pass the device to Player 2 to guess which answers are human!</p>
-                </div>
-
-                <form id="answersForm">
-                    <div id="answersContainer"></div>
-                    <div class="controls">
-                        <button type="button" class="btn" onclick="startQuiz()">▶️ Start Quiz (Player 2 Guesses)</button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Quiz Screen (Player 2 guesses) -->
-            <div id="quizScreen" class="screen">
-                <div class="question-number">Question <span id="questionNum">1</span> / 10</div>
-                <div class="progress">
-                    <div class="progress-bar" id="progressBar"></div>
-                </div>
-
-                <h2 id="questionText" style="margin: 30px 0; color: #333;"></h2>
-
-                <div id="optionsContainer"></div>
-
-                <div class="controls">
-                    <button class="btn" onclick="submitAnswer()">✓ Next Question</button>
-                </div>
-            </div>
-
-            <!-- Results Screen -->
-            <div id="resultsScreen" class="screen">
-                <h2 style="text-align: center; margin-bottom: 30px;">🎯 Final Results</h2>
+            
+            questions.forEach((question, idx) => {
+                const div = document.createElement('div');
+                div.className = 'question-input';
                 
-                <div class="score" id="scoreDisplay"></div>
-                <p style="text-align: center; color: #666; margin-bottom: 30px;">You correctly identified <span id="scoreText"></span> human answers out of 10!</p>
-
-                <div id="answersReview" style="margin: 30px 0;"></div>
-
-                <div class="controls">
-                    <button class="btn" onclick="restartGame()">🔄 Play Again</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const API_BASE = 'http://localhost:5000/api/quiz';
-        let currentQuiz = null;
-        let questions = [];
-        let selectedAnswer = null;
-
-        // Load questions on page load
-        async function loadQuestions() {
-            try {
-                const res = await fetch(`${API_BASE}/questions`);
-                const data = await res.json();
-                questions = data.questions;
-                renderSetupScreen();
-            } catch (error) {
-                alert('Error loading questions. Make sure backend is running on http://localhost:5000');
-            }
-        }
-
-        function renderSetupScreen() {
-            const container = document.getElementById('answersContainer');
-            container.innerHTML = '';
-
-            questions.forEach((q, idx) => {
-                const label = document.createElement('div');
-                label.className = 'question-label';
-                label.textContent = `${idx + 1}. ${q}`;
-                container.appendChild(label);
-
+                const label = document.createElement('label');
+                label.textContent = `Question ${idx + 1}: ${question}`;
+                
                 const textarea = document.createElement('textarea');
                 textarea.id = `answer_${idx}`;
                 textarea.placeholder = 'Type your answer here...';
-                container.appendChild(textarea);
+                
+                div.appendChild(label);
+                div.appendChild(textarea);
+                container.appendChild(div);
             });
         }
 
-        async function startQuiz() {
-            // Collect answers
+        async function submitAnswers() {
             const humanAnswers = {};
+            
             for (let i = 0; i < questions.length; i++) {
                 const answer = document.getElementById(`answer_${i}`).value.trim();
                 if (!answer) {
-                    alert(`Please answer all questions!`);
+                    alert(`Please answer question ${i + 1}`);
                     return;
                 }
                 humanAnswers[i] = answer;
             }
 
-            // Start quiz
             try {
                 const res = await fetch(`${API_BASE}/start`, {
                     method: 'POST',
@@ -891,19 +358,20 @@
                     body: JSON.stringify({ human_answers: humanAnswers })
                 });
                 const data = await res.json();
-                currentQuiz = data.quiz_id;
-                loadNextQuestion();
+                currentQuizId = data.quiz_id;
+                currentQuestion = 1;
+                loadQuestion();
             } catch (error) {
                 alert('Error starting quiz: ' + error.message);
             }
         }
 
-        async function loadNextQuestion() {
+        async function loadQuestion() {
             try {
                 const res = await fetch(`${API_BASE}/get-question`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ quiz_id: currentQuiz })
+                    body: JSON.stringify({ quiz_id: currentQuizId })
                 });
                 const data = await res.json();
 
@@ -912,42 +380,42 @@
                     return;
                 }
 
-                document.getElementById('setupScreen').classList.remove('active');
-                document.getElementById('quizScreen').classList.add('active');
+                // Update progress
+                const progress = (data.question_number / 10) * 100;
+                document.getElementById('progressFill').style.width = progress + '%';
+                document.getElementById('progressText').textContent = `Question ${data.question_number} of 10`;
 
-                document.getElementById('questionNum').textContent = data.question_number;
+                // Display question
                 document.getElementById('questionText').textContent = data.question;
 
+                // Display options
                 const container = document.getElementById('optionsContainer');
                 container.innerHTML = '';
                 selectedAnswer = null;
 
-                ['A', 'B', 'C'].forEach(letter => {
-                    const btn = document.createElement('button');
-                    btn.type = 'button';
-                    btn.className = 'btn-option';
+                ['A', 'B', 'C', 'D'].forEach(letter => {
+                    const btn = document.createElement('div');
+                    btn.className = 'option';
                     btn.textContent = `${letter}. ${data.options[letter]}`;
-                    btn.onclick = () => selectAnswer(letter, btn);
+                    btn.onclick = () => selectOption(letter, btn);
                     container.appendChild(btn);
                 });
 
-                // Update progress bar
-                const progress = (data.question_number / 10) * 100;
-                document.getElementById('progressBar').style.width = progress + '%';
+                showScreen('quizScreen');
             } catch (error) {
                 alert('Error loading question: ' + error.message);
             }
         }
 
-        function selectAnswer(letter, element) {
-            document.querySelectorAll('.btn-option').forEach(e => e.classList.remove('selected'));
+        function selectOption(letter, element) {
+            document.querySelectorAll('.option').forEach(e => e.classList.remove('selected'));
             element.classList.add('selected');
             selectedAnswer = letter;
         }
 
-        async function submitAnswer() {
+        async function submitGuess() {
             if (!selectedAnswer) {
-                alert('Please select an answer!');
+                alert('Please select an answer');
                 return;
             }
 
@@ -955,795 +423,47 @@
                 const res = await fetch(`${API_BASE}/check-answer`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ quiz_id: currentQuiz, answer: selectedAnswer })
+                    body: JSON.stringify({ quiz_id: currentQuizId, answer: selectedAnswer })
                 });
                 const data = await res.json();
 
                 if (data.is_complete) {
-                    showResults();
+                    showResults(data.score);
                 } else {
-                    loadNextQuestion();
+                    currentQuestion++;
+                    loadQuestion();
                 }
             } catch (error) {
                 alert('Error submitting answer: ' + error.message);
             }
         }
 
-        async function showResults() {
-            // Fetch final results
-            const res = await fetch(`${API_BASE}/get-question`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ quiz_id: currentQuiz })
-            });
+        function showResults(score) {
+            const percentage = Math.round((score / 10) * 100);
+            document.getElementById('scoreNumber').textContent = percentage + '%';
+            document.getElementById('scoreDetail').textContent = `${score} out of 10 correct`;
+            
+            let message = '';
+            if (percentage >= 80) {
+                message = '🎉 Excellent! You have strong human intuition.';
+            } else if (percentage >= 60) {
+                message = '👍 Good job! You spotted most of the humans.';
+            } else if (percentage >= 40) {
+                message = '🤔 Not bad! AI is tricky.';
+            } else {
+                message = '🤖 AI fooled you! Try again to improve your detection skills.';
+            }
+            
+            document.getElementById('scoreMessage').textContent = message;
+            showScreen('resultsScreen');
+        }
 
-            document.getElementById('quizScreen').classList.remove('active');
-            document.getElementById('resultsScreen').classList.add('active');
-
-            // Get stored results from sessionStorage or make another call
-            const score = localStorage.getItem(`quiz_${currentQuiz}_score`) || 0;
-            const finalScore = Math.max(score, 0);
-
-            const scorePercent = Math.round((finalScore / 10) * 100);
-            const className = finalScore >= 7 ? 'result-good' : finalScore >= 5 ? '' : 'result-bad';
-
-            document.getElementById('scoreDisplay').innerHTML = `<span class="${className}">${finalScore}/10</span>`;
-            document.getElementById('scoreText').textContent = finalScore;
+        function goBack() {
+            showScreen('startScreen');
         }
 
         function restartGame() {
-            document.getElementById('setupScreen').classList.add('active');
-            document.getElementById('resultsScreen').classList.remove('active');
-            currentQuiz = null;
-            selectedAnswer = null;
-            renderSetupScreen();
-            window.scrollTo(0, 0);
-        }
-
-        // Load on page load
-        loadQuestions();
-    </script>
-</body>
-</html>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            width: 100%;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-
-        .content {
-            padding: 40px;
-        }
-
-        .start-screen {
-            text-align: center;
-        }
-
-        .start-screen h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        .start-screen p {
-            margin-bottom: 15px;
-            color: #666;
-            line-height: 1.6;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            font-size: 1em;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin-top: 20px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .game-screen {
-            display: none;
-        }
-
-        .suspect-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .suspect-card {
-            background: #f5f5f5;
-            border: 3px solid #ddd;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .suspect-card:hover {
-            border-color: #667eea;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
-        }
-
-        .suspect-card.selected {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-
-        .suspect-card h3 {
-            margin-bottom: 8px;
-            font-size: 1.2em;
-        }
-
-        .suspect-card .role {
-            font-size: 0.9em;
-            opacity: 0.8;
-        }
-
-        .question-section {
-            margin-bottom: 30px;
-        }
-
-        .question-section h3 {
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .questions-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .question-btn {
-            background: white;
-            border: 2px solid #ddd;
-            padding: 10px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.9em;
-        }
-
-        .question-btn:hover {
-            border-color: #667eea;
-            color: #667eea;
-        }
-
-        .question-btn.asked {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .response-box {
-            background: #f9f9f9;
-            border-left: 4px solid #667eea;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            min-height: 60px;
-        }
-
-        .response-box .suspect-name {
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-
-        .response-box .response-text {
-            color: #333;
-            line-height: 1.6;
-        }
-
-        .stats {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #f5f5f5;
-            border-radius: 8px;
-        }
-
-        .stat {
-            text-align: center;
-        }
-
-        .stat-label {
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 5px;
-        }
-
-        .stat-value {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #667eea;
-        }
-
-        .controls {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .btn-secondary {
-            background: #ddd;
-            color: #333;
-        }
-
-        .btn-secondary:hover {
-            background: #ccc;
-        }
-
-        .voting-screen {
-            text-align: center;
-            display: none;
-        }
-
-        .voting-screen h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        .result-screen {
-            text-align: center;
-            display: none;
-        }
-
-        .result-box {
-            background: #f5f5f5;
-            padding: 30px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
-        .result-box.correct {
-            background: #d4edda;
-            border: 2px solid #28a745;
-        }
-
-        .result-box.incorrect {
-            background: #f8d7da;
-            border: 2px solid #dc3545;
-        }
-
-        .result-box h3 {
-            font-size: 1.5em;
-            margin-bottom: 10px;
-        }
-
-        .human-reveal {
-            background: white;
-            border: 3px solid #667eea;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            display: inline-block;
-        }
-
-        .human-reveal h4 {
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-
-        .human-reveal .name {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .human-reveal .role {
-            color: #666;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2em;
-            }
-
-            .content {
-                padding: 20px;
-            }
-
-            .suspect-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .turn-indicator {
-            color: #666;
-            font-size: 0.9em;
-        }
-
-        .turn-indicator.low {
-            color: #dc3545;
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🔍 Reverse Turing Detective</h1>
-            <p>Spot the human among the AI</p>
-        </div>
-
-        <div class="content">
-            <!-- Start Screen -->
-            <div id="startScreen" class="start-screen">
-                <h2>Welcome to Reverse Turing Detective</h2>
-                <p>One of the five suspects is a REAL HUMAN. The other four are AI-generated.</p>
-                <p><strong>Your mission:</strong> Ask each suspect questions and identify who is human!</p>
-                <p style="background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 20px 0;">
-                    <strong>How to play:</strong><br>
-                    1️⃣ Pick a suspect and ask them a question<br>
-                    2️⃣ After each response, mark it as <strong>"Human"</strong> or <strong>"AI"</strong> to track your suspicions<br>
-                    3️⃣ You have 10 interactions to gather evidence<br>
-                    4️⃣ When ready, vote on who you think is the HUMAN<br>
-                    5️⃣ Find out if you were right!
-                </p>
-                <button class="btn" onclick="startGame()">Start Game</button>
-            </div>
-
-            <!-- Game Screen -->
-            <div id="gameScreen" class="game-screen">
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">Turns Remaining</div>
-                        <div class="stat-value" id="turnsRemaining">10</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">Status</div>
-                        <div class="stat-value" id="gameStatus">Ready</div>
-                    </div>
-                </div>
-
-                <div class="suspect-grid" id="suspectGrid"></div>
-
-                <div class="question-section">
-                    <h3>Choose a Question</h3>
-                    <div class="questions-container" id="questionsContainer"></div>
-                </div>
-
-                <div id="responseContainer"></div>
-
-                <div id="assessmentButtons" style="display:none; margin: 20px 0;">
-                    <p style="margin-bottom: 15px; color: #333; font-weight: bold;">Is this response from a HUMAN or AI?</p>
-                    <div class="controls">
-                        <button class="btn" onclick="markAsHuman()">👤 Human Response</button>
-                        <button class="btn btn-secondary" onclick="markAsAI()">🤖 AI Response</button>
-                    </div>
-                </div>
-
-                <div id="assessmentHistory" style="margin: 20px 0;"></div>
-
-                <div class="controls">
-                    <button class="btn" onclick="proceedToVote()" id="voteBtn" style="display:none;">🎯 Vote on Who is Human</button>
-                </div>
-            </div>
-
-            <!-- Voting Screen -->
-            <div id="votingScreen" class="voting-screen">
-                <h2>🎯 Final Decision</h2>
-                <p style="margin-bottom: 30px; font-size: 1.1em; color: #333;">Which ONE suspect is actually HUMAN?<br><small>(The other 4 are AI-generated)</small></p>
-                <div class="suspect-grid" id="votingSuspectGrid"></div>
-                <div class="controls">
-                    <button class="btn" onclick="submitVote()">🎯 Submit My Vote</button>
-                    <button class="btn btn-secondary" onclick="backToGame()">← Back to Questioning</button>
-                </div>
-            </div>
-
-            <!-- Result Screen -->
-            <div id="resultScreen" class="result-screen">
-                <div id="resultBox" class="result-box"></div>
-                <div class="human-reveal">
-                    <h4>The Human Was:</h4>
-                    <div class="name" id="humanName"></div>
-                    <div class="role" id="humanRole"></div>
-                </div>
-                <div style="background: #f9f9f9; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: left;">
-                    <h4 style="margin-bottom: 10px;">Your Assessment Strategy:</h4>
-                    <div id="assessmentSummary"></div>
-                </div>
-                <button class="btn" onclick="restartGame()">Play Again</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const API_BASE = 'http://localhost:5000/api';
-        let currentGame = null;
-        let selectedSuspect = null;
-        let askedQuestions = new Set();
-        let availableQuestions = [];
-        let lastResponse = null;
-        let assessments = {}; // Track assessments per suspect
-        
-        // Check if backend is running
-        async function checkBackend() {
-            try {
-                const res = await fetch(`${API_BASE}/questions`, {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                return res.ok;
-            } catch (error) {
-                return false;
-            }
-        }
-
-        async function startGame() {
-            try {
-                // Check if backend is running
-                const backendRunning = await checkBackend();
-                if (!backendRunning) {
-                    alert('Error: Backend server is not running.\n\nPlease start it with: py game_backend.py\n\nThe server should run on http://localhost:5000');
-                    return;
-                }
-
-                // Fetch available questions first
-                const questionsRes = await fetch(`${API_BASE}/questions`, {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                
-                if (!questionsRes.ok) {
-                    throw new Error(`Failed to fetch questions: ${questionsRes.status}`);
-                }
-                
-                const questionsData = await questionsRes.json();
-                availableQuestions = questionsData.questions;
-
-                // Start game
-                const res = await fetch(`${API_BASE}/game/start`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                
-                if (!res.ok) {
-                    throw new Error(`Failed to start game: ${res.status}`);
-                }
-                
-                const data = await res.json();
-                
-                currentGame = data;
-                askedQuestions.clear();
-                selectedSuspect = null;
-                assessments = {};
-
-                renderGameScreen();
-            } catch (error) {
-                console.error('Error starting game:', error);
-                alert('Error starting game:\n\n' + error.message + '\n\nMake sure the backend is running on http://localhost:5000');
-            }
-        }
-
-        function renderGameScreen() {
-            document.getElementById('startScreen').style.display = 'none';
-            document.getElementById('votingScreen').style.display = 'none';
-            document.getElementById('resultScreen').style.display = 'none';
-            document.getElementById('gameScreen').style.display = 'block';
-            document.getElementById('voteBtn').style.display = 'none';
-            document.getElementById('assessmentButtons').style.display = 'none';
-
-            renderSuspects();
-            renderQuestions();
-            renderAssessmentHistory();
-            updateStats();
-        }
-
-        function renderSuspects() {
-            const grid = document.getElementById('suspectGrid');
-            grid.innerHTML = '';
-
-            currentGame.suspects.forEach(suspect => {
-                const card = document.createElement('div');
-                card.className = 'suspect-card';
-                if (selectedSuspect && selectedSuspect.id === suspect.id) {
-                    card.classList.add('selected');
-                }
-                card.innerHTML = `
-                    <h3>${suspect.name}</h3>
-                    <div class="role">${suspect.role}</div>
-                `;
-                card.onclick = () => selectSuspect(suspect);
-                grid.appendChild(card);
-            });
-        }
-
-        function selectSuspect(suspect) {
-            selectedSuspect = suspect;
-            renderSuspects();
-            document.getElementById('gameStatus').textContent = `Questioning ${suspect.name}`;
-        }
-
-        function renderQuestions() {
-            const container = document.getElementById('questionsContainer');
-            container.innerHTML = '';
-
-            availableQuestions.forEach(question => {
-                const btn = document.createElement('button');
-                btn.className = 'question-btn';
-                btn.textContent = question;
-                
-                if (askedQuestions.has(question)) {
-                    btn.classList.add('asked');
-                    btn.disabled = true;
-                }
-
-                btn.onclick = () => askQuestion(question);
-                container.appendChild(btn);
-            });
-        }
-
-        async function askQuestion(question) {
-            if (!selectedSuspect) {
-                alert('Please select a suspect first');
-                return;
-            }
-
-            if (currentGame.turns_remaining <= 0) {
-                alert('No turns remaining!');
-                return;
-            }
-
-            try {
-                const res = await fetch(`${API_BASE}/game/${currentGame.game_id}/ask`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        suspect_id: selectedSuspect.id,
-                        question: question
-                    })
-                });
-
-                const data = await res.json();
-
-                if (res.ok) {
-                    askedQuestions.add(question);
-                    currentGame.turns_remaining = data.turns_remaining;
-                    lastResponse = {
-                        suspect_id: selectedSuspect.id,
-                        suspect_name: data.suspect_name,
-                        question: question,
-                        response: data.response
-                    };
-                    
-                    const responseContainer = document.getElementById('responseContainer');
-                    responseContainer.innerHTML = `
-                        <div class="response-box">
-                            <div class="suspect-name">${data.suspect_name}:</div>
-                            <div class="response-text">"${data.response}"</div>
-                        </div>
-                    `;
-
-                    // Show assessment buttons
-                    document.getElementById('assessmentButtons').style.display = 'block';
-
-                    renderQuestions();
-                    updateStats();
-
-                    if (data.turns_remaining === 0) {
-                        document.getElementById('voteBtn').style.display = 'inline-block';
-                    }
-                } else {
-                    alert('Error: ' + (data.error || res.status));
-                }
-            } catch (error) {
-                console.error('Error asking question:', error);
-                alert('Error asking question:\n\n' + error.message);
-            }
-        }
-
-        function markAsHuman() {
-            if (!lastResponse) return;
-            assessments[lastResponse.suspect_id] = 'human';
-            renderAssessmentHistory();
-            document.getElementById('responseContainer').innerHTML = '';
-            document.getElementById('assessmentButtons').style.display = 'none';
-        }
-
-        function markAsAI() {
-            if (!lastResponse) return;
-            assessments[lastResponse.suspect_id] = 'ai';
-            renderAssessmentHistory();
-            document.getElementById('responseContainer').innerHTML = '';
-            document.getElementById('assessmentButtons').style.display = 'none';
-        }
-
-        function renderAssessmentHistory() {
-            const container = document.getElementById('assessmentHistory');
-            const assessmentEntries = Object.entries(assessments);
-            
-            if (assessmentEntries.length === 0) {
-                container.innerHTML = '<p style="color: #999; font-size: 0.9em;">Your assessments will appear here</p>';
-                return;
-            }
-
-            let html = '<div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px;"><strong>Your Assessments:</strong><div style="margin-top: 10px;">';
-            
-            assessmentEntries.forEach(([suspectId, assessment]) => {
-                const suspect = currentGame.suspects.find(s => s.id === suspectId);
-                if (suspect) {
-                    const icon = assessment === 'human' ? '👤' : '🤖';
-                    const label = assessment === 'human' ? 'HUMAN' : 'AI';
-                    html += `<div style="padding: 8px; margin: 5px 0; background: white; border-radius: 5px; border-left: 4px solid ${assessment === 'human' ? '#28a745' : '#007bff'};">
-                        ${icon} <strong>${suspect.name}</strong>: ${label}
-                    </div>`;
-                }
-            });
-            
-            html += '</div></div>';
-            container.innerHTML = html;
-        }
-
-        function updateStats() {
-            document.getElementById('turnsRemaining').textContent = currentGame.turns_remaining;
-            
-            const turnsElement = document.querySelector('.stat-value');
-            if (currentGame.turns_remaining <= 2) {
-                turnsElement.parentElement.classList.add('low');
-            }
-        }
-
-        function proceedToVote() {
-            document.getElementById('gameScreen').style.display = 'none';
-            document.getElementById('votingScreen').style.display = 'block';
-            
-            const grid = document.getElementById('votingSuspectGrid');
-            grid.innerHTML = '';
-            selectedSuspect = null;
-
-            currentGame.suspects.forEach(suspect => {
-                const card = document.createElement('div');
-                card.className = 'suspect-card';
-                card.innerHTML = `
-                    <h3>${suspect.name}</h3>
-                    <div class="role">${suspect.role}</div>
-                `;
-                card.style.cursor = 'pointer';
-                card.onclick = () => {
-                    document.querySelectorAll('#votingSuspectGrid .suspect-card').forEach(c => c.classList.remove('selected'));
-                    card.classList.add('selected');
-                    selectedSuspect = suspect;
-                };
-                grid.appendChild(card);
-            });
-        }
-
-        async function submitVote() {
-            if (!selectedSuspect) {
-                alert('Please select who you think is the HUMAN');
-                return;
-            }
-
-            try {
-                const res = await fetch(`${API_BASE}/game/${currentGame.game_id}/vote`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ guess_id: selectedSuspect.id })
-                });
-
-                if (!res.ok) {
-                    throw new Error(`Failed to submit vote: ${res.status}`);
-                }
-
-                const data = await res.json();
-                showResult(data);
-            } catch (error) {
-                console.error('Error submitting vote:', error);
-                alert('Error submitting vote:\n\n' + error.message);
-            }
-        }
-
-        function showResult(data) {
-            document.getElementById('votingScreen').style.display = 'none';
-            document.getElementById('resultScreen').style.display = 'block';
-
-            const resultBox = document.getElementById('resultBox');
-
-            if (data.correct) {
-                resultBox.className = 'result-box correct';
-                resultBox.innerHTML = '<h3>🎉 CORRECT!</h3><p>You successfully identified the human! Congratulations!</p>';
-            } else {
-                resultBox.className = 'result-box incorrect';
-                resultBox.innerHTML = `<h3>❌ Incorrect</h3><p>You guessed <strong>${selectedSuspect.name}</strong> was human, but they were AI.</p>`;
-            }
-
-            document.getElementById('humanName').textContent = data.human_was.name;
-            document.getElementById('humanRole').textContent = data.human_was.role;
-
-            // Show assessment summary
-            let summaryHtml = '';
-            if (Object.keys(assessments).length > 0) {
-                summaryHtml = '<ul style="margin: 0;">';
-                currentGame.suspects.forEach(suspect => {
-                    if (assessments[suspect.id]) {
-                        const assessment = assessments[suspect.id];
-                        const isCorrect = (assessment === 'human' && suspect.id === data.human_was.id) || 
-                                        (assessment === 'ai' && suspect.id !== data.human_was.id);
-                        const icon = isCorrect ? '✓' : '✗';
-                        const color = isCorrect ? '#28a745' : '#dc3545';
-                        const label = assessment === 'human' ? 'HUMAN' : 'AI';
-                        summaryHtml += `<li style="color: ${color}; margin: 5px 0;"><strong>${icon} ${suspect.name}:</strong> You marked as ${label}</li>`;
-                    }
-                });
-                summaryHtml += '</ul>';
-            } else {
-                summaryHtml = '<p style="color: #999;">You did not mark any responses during the game.</p>';
-            }
-            document.getElementById('assessmentSummary').innerHTML = summaryHtml;
-        }
-
-        function backToGame() {
-            renderGameScreen();
-        }
-
-        function restartGame() {
-            document.getElementById('startScreen').style.display = 'block';
-            document.getElementById('resultScreen').style.display = 'none';
-            startGame();
+            showScreen('startScreen');
         }
     </script>
 </body>
