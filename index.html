@@ -12,29 +12,81 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a0033 50%, #0d0015 100%);
             min-height: 100vh;
             padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
+            color: #e0e0e0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(255, 0, 0, 0.03) 0px,
+                    rgba(255, 0, 0, 0.03) 2px,
+                    transparent 2px,
+                    transparent 4px
+                );
+            pointer-events: none;
+            z-index: -1;
+            animation: scanlines 8s linear infinite;
+        }
+
+        @keyframes scanlines {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(10px); }
         }
 
         .container {
             max-width: 700px;
             width: 100%;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, rgba(10, 14, 39, 0.95) 0%, rgba(26, 0, 51, 0.95) 100%);
+            border: 2px solid #8B0000;
+            border-radius: 0;
+            box-shadow: 
+                0 0 40px rgba(255, 0, 0, 0.4),
+                0 0 80px rgba(128, 0, 0, 0.3),
+                inset 0 0 30px rgba(0, 0, 0, 0.8);
             overflow: hidden;
-            animation: slideIn 0.5s ease-out;
+            animation: slideIn 0.8s ease-out;
+            position: relative;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(90deg, transparent 0%, rgba(255, 50, 0, 0.1) 50%, transparent 100%);
+            pointer-events: none;
+            animation: flicker 3s infinite;
+            z-index: -1;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
         }
 
         @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
@@ -43,16 +95,23 @@
         }
 
         h1 {
-            color: #667eea;
+            color: #ff3333;
             text-align: center;
-            margin-bottom: 30px;
-            font-size: 2.5em;
-            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 2.8em;
+            font-weight: 900;
+            text-shadow: 
+                0 0 10px #ff3333,
+                0 0 20px #8B0000,
+                0 0 30px rgba(255, 0, 0, 0.5),
+                2px 2px 0 #000,
+                -2px -2px 0 #000;
+            letter-spacing: 2px;
         }
 
         .screen {
             display: none;
-            animation: fadeIn 0.4s ease-in;
+            animation: fadeIn 0.6s ease-in;
         }
 
         @keyframes fadeIn {
@@ -65,21 +124,36 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 50px 40px;
+            background: linear-gradient(135deg, #1a0000 0%, #330033 50%, #0d0015 100%);
+            color: #ff3333;
+            padding: 60px 40px;
             text-align: center;
+            border-bottom: 3px solid #8B0000;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff3333, transparent);
+            box-shadow: 0 0 20px #ff3333;
         }
 
         .header h1 {
-            color: white;
             margin-bottom: 15px;
-            font-size: 2.8em;
         }
 
         .header p {
-            font-size: 1.1em;
-            opacity: 0.95;
+            font-size: 1.15em;
+            color: #ff6666;
+            opacity: 0.9;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+            letter-spacing: 1px;
         }
 
         .content {
@@ -87,34 +161,50 @@
         }
 
         .instructions {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            border-left: 5px solid #667eea;
+            background: linear-gradient(135deg, rgba(20, 0, 20, 0.8) 0%, rgba(40, 0, 40, 0.8) 100%);
+            border-left: 5px solid #ff3333;
+            border-right: 2px solid #8B0000;
             padding: 25px;
             margin-bottom: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+            border-radius: 0;
+            box-shadow: 
+                0 0 20px rgba(255, 0, 0, 0.2),
+                inset 0 0 10px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .instructions::before {
+            content: '⚠';
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            font-size: 2em;
+            color: #ff3333;
+            text-shadow: 0 0 10px #ff3333;
         }
 
         .instructions h2 {
-            color: #667eea;
+            color: #ff6666;
             margin-bottom: 15px;
             font-size: 1.3em;
-            font-weight: 600;
+            font-weight: 700;
+            text-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
         }
 
         .instructions ol {
             margin-left: 20px;
-            color: #333;
+            color: #cccccc;
         }
 
         .instructions li {
             margin-bottom: 12px;
             line-height: 1.8;
             font-weight: 500;
+            color: #d0d0d0;
         }
 
         .instructions p {
-            color: #555;
+            color: #b0b0b0;
             line-height: 1.8;
             font-size: 1.05em;
         }
@@ -129,23 +219,48 @@
         }
 
         button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, #330000 0%, #660000 100%);
+            color: #ff3333;
             padding: 16px 40px;
-            border: none;
-            border-radius: 8px;
+            border: 2px solid #ff3333;
+            border-radius: 0;
             cursor: pointer;
             font-size: 1.05em;
-            font-weight: 600;
+            font-weight: 700;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 
+                0 0 15px rgba(255, 0, 0, 0.4),
+                0 0 30px rgba(139, 0, 0, 0.3),
+                inset 0 0 10px rgba(0, 0, 0, 0.5);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
+            font-family: 'Courier New', monospace;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 100, 0, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        button:hover::before {
+            left: 100%;
         }
 
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+            box-shadow: 
+                0 0 25px rgba(255, 0, 0, 0.6),
+                0 0 50px rgba(139, 0, 0, 0.5),
+                inset 0 0 15px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 0 10px #ff3333;
         }
 
         button:active {
@@ -153,46 +268,63 @@
         }
 
         button.secondary {
-            background: linear-gradient(135deg, #a0aec0 0%, #718096 100%);
-            box-shadow: 0 4px 15px rgba(160, 174, 192, 0.4);
+            background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
+            border-color: #666666;
+            color: #999999;
+            box-shadow: 
+                0 0 10px rgba(100, 100, 100, 0.2),
+                inset 0 0 10px rgba(0, 0, 0, 0.5);
         }
 
         button.secondary:hover {
-            box-shadow: 0 8px 25px rgba(160, 174, 192, 0.6);
+            border-color: #ff3333;
+            color: #ff3333;
+            box-shadow: 
+                0 0 15px rgba(255, 0, 0, 0.3),
+                inset 0 0 10px rgba(0, 0, 0, 0.5);
         }
 
         .question-input {
             margin-bottom: 25px;
-            animation: slideIn 0.3s ease-out;
+            animation: slideIn 0.5s ease-out;
         }
 
         label {
             display: block;
-            color: #2d3748;
+            color: #ff6666;
             font-weight: 600;
             margin-bottom: 10px;
             font-size: 1em;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
         }
 
         textarea {
             width: 100%;
             padding: 14px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-family: 'Segoe UI', sans-serif;
+            border: 2px solid #8B0000;
+            border-radius: 0;
+            font-family: 'Courier New', monospace;
             font-size: 0.95em;
             min-height: 60px;
             resize: vertical;
             box-sizing: border-box;
             transition: all 0.3s;
-            background: #f7fafc;
+            background: rgba(10, 0, 10, 0.6);
+            color: #e0e0e0;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        textarea::placeholder {
+            color: #666666;
         }
 
         textarea:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            background: white;
+            border-color: #ff3333;
+            box-shadow: 
+                inset 0 0 10px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(255, 0, 0, 0.3);
+            background: rgba(30, 0, 30, 0.8);
         }
 
         .progress-container {
@@ -200,34 +332,39 @@
         }
 
         .progress-label {
-            color: #667eea;
+            color: #ff6666;
             font-weight: 600;
             margin-bottom: 10px;
             font-size: 0.95em;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
         }
 
         .progress-bar {
             width: 100%;
             height: 8px;
-            background: #e2e8f0;
-            border-radius: 10px;
+            background: linear-gradient(90deg, rgba(0, 0, 0, 0.8), rgba(40, 0, 40, 0.8));
+            border: 1px solid #8B0000;
+            border-radius: 0;
             overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
         }
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(90deg, #ff3333 0%, #ff6666 100%);
             transition: width 0.4s ease;
-            box-shadow: 0 0 10px rgba(102, 126, 234, 0.6);
+            box-shadow: 
+                0 0 15px rgba(255, 0, 0, 0.6),
+                inset 0 0 5px rgba(0, 0, 0, 0.3);
         }
 
         .question-text {
             font-size: 1.25em;
             font-weight: 600;
-            color: #2d3748;
+            color: #ff6666;
             margin: 35px 0 30px 0;
             line-height: 1.6;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
         }
 
         .options-container {
@@ -238,61 +375,74 @@
         }
 
         .option {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e2e8f0 100%);
-            border: 2px solid #cbd5e0;
+            background: linear-gradient(135deg, rgba(20, 0, 20, 0.6) 0%, rgba(40, 0, 40, 0.6) 100%);
+            border: 2px solid #8B0000;
             padding: 18px;
-            border-radius: 8px;
+            border-radius: 0;
             cursor: pointer;
             transition: all 0.3s;
             text-align: left;
             font-weight: 500;
-            color: #2d3748;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            color: #cccccc;
+            box-shadow: 
+                0 0 10px rgba(0, 0, 0, 0.5),
+                inset 0 0 5px rgba(0, 0, 0, 0.3);
+            font-family: 'Courier New', monospace;
         }
 
         .option:hover {
-            border-color: #667eea;
-            background: linear-gradient(135deg, #edf2f7 0%, #e2e8f0 100%);
+            border-color: #ff3333;
+            background: linear-gradient(135deg, rgba(40, 0, 0, 0.7) 0%, rgba(60, 0, 30, 0.7) 100%);
             transform: translateX(5px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+            box-shadow: 
+                0 0 20px rgba(255, 0, 0, 0.3),
+                inset 0 0 5px rgba(0, 0, 0, 0.3);
+            color: #ff6666;
         }
 
         .option.selected {
-            border-color: #667eea;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            border-color: #ff3333;
+            background: linear-gradient(135deg, #330000 0%, #660033 100%);
+            color: #ff3333;
             font-weight: 600;
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 
+                0 0 30px rgba(255, 0, 0, 0.5),
+                0 0 50px rgba(139, 0, 0, 0.3),
+                inset 0 0 10px rgba(0, 0, 0, 0.3);
             transform: translateX(8px);
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
         }
 
         .score-section {
             text-align: center;
             padding: 50px 20px;
-            animation: slideIn 0.5s ease-out;
+            animation: slideIn 0.6s ease-out;
         }
 
         .score-label {
             font-size: 1.1em;
-            color: #718096;
+            color: #ff6666;
             font-weight: 600;
             margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
         }
 
         .score-number {
             font-size: 5em;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-weight: 900;
+            color: #ff3333;
             margin: 20px 0;
-            animation: scaleIn 0.6s ease-out;
+            animation: scaleIn 0.8s ease-out;
+            text-shadow: 
+                0 0 20px #ff3333,
+                0 0 40px rgba(255, 0, 0, 0.5),
+                0 0 60px rgba(139, 0, 0, 0.3);
+            letter-spacing: 2px;
         }
 
         @keyframes scaleIn {
             from {
-                transform: scale(0.8);
+                transform: scale(0.5);
                 opacity: 0;
             }
             to {
@@ -303,19 +453,23 @@
 
         .score-detail {
             font-size: 1.2em;
-            color: #2d3748;
+            color: #cccccc;
             font-weight: 600;
+            text-shadow: 0 0 8px rgba(255, 0, 0, 0.1);
         }
 
         .score-details {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e2e8f0 100%);
+            background: linear-gradient(135deg, rgba(20, 0, 20, 0.8) 0%, rgba(40, 0, 40, 0.8) 100%);
             padding: 25px;
             margin: 30px 0;
-            border-radius: 8px;
-            color: #2d3748;
+            border-radius: 0;
+            border: 2px solid #8B0000;
+            color: #b0b0b0;
             font-weight: 500;
             font-size: 1.05em;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+            box-shadow: 
+                0 0 15px rgba(255, 0, 0, 0.2),
+                inset 0 0 10px rgba(0, 0, 0, 0.5);
         }
 
         @media (max-width: 600px) {
@@ -343,23 +497,23 @@
         <!-- Start Screen -->
         <div id="startScreen" class="screen active">
             <div class="header">
-                <h1>🔍 Turing Detective</h1>
-                <p>Can you spot the human?</p>
+                <h1>� TURING DETECTIVE 💀</h1>
+                <p>WHERE HUMAN ENDS AND MACHINE BEGINS</p>
             </div>
 
             <div class="content">
                 <div class="instructions">
-                    <h2>How to Play</h2>
+                    <h2>⚡ INITIATE SEQUENCE ⚡</h2>
                     <ol>
-                        <li><strong>👤 Player 1 (Human):</strong> Click "Prepare Game" and answer 10 questions honestly and personally.</li>
-                        <li><strong>🕵️ Player 2 (Detective):</strong> You'll see each question with 3 answer options - one is human, two are AI-generated.</li>
-                        <li><strong>💭 Guess:</strong> For each question, select which answer you think came from a real human.</li>
-                        <li><strong>📊 Score:</strong> After 10 questions, see how many you got correct as a percentage.</li>
+                        <li><strong>🧟 PLAYER 1 (Human):</strong> Answer 10 questions with your authentic truth. They will be buried among the artificial.</li>
+                        <li><strong>👁️ PLAYER 2 (Detector):</strong> Witness 3 responses per question - one forged by the human mind, two born from the void.</li>
+                        <li><strong>🔍 HUNT:</strong> For each question, identify which answer pulses with genuine humanity.</li>
+                        <li><strong>⚔️ FINAL JUDGMENT:</strong> After 10 trials, your detection accuracy shall be revealed.</li>
                     </ol>
                 </div>
 
                 <div class="button-group">
-                    <button onclick="startSetup()">🚀 Prepare Game</button>
+                    <button onclick="startSetup()">⚡ COMMENCE ⚡</button>
                 </div>
             </div>
         </div>
@@ -367,21 +521,21 @@
         <!-- Setup Screen (Player 1 enters answers) -->
         <div id="setupScreen" class="screen">
             <div class="header">
-                <h1>👤 Your Answers</h1>
-                <p>Player 1: Be honest and authentic</p>
+                <h1>🧟 INPUT SEQUENCE 🧟</h1>
+                <p>THE HUMAN TESTIMONY BEGINS</p>
             </div>
 
             <div class="content">
                 <div class="instructions">
-                    <p>Answer these 10 questions in your own words. Your genuine responses will be mixed with AI-generated answers for Player 2 to challenge.</p>
+                    <p>Speak your truth. Let your words echo across the abyss. Your authentic responses will be forged into this dark ritual - hidden among the artificial.</p>
                 </div>
 
                 <form id="answersForm">
                     <div id="answersContainer"></div>
                     
                     <div class="button-group">
-                        <button type="button" onclick="submitAnswers()">✓ Start Quiz</button>
-                        <button type="button" class="secondary" onclick="goBack()">← Back</button>
+                        <button type="button" onclick="submitAnswers()">⚡ SEAL TESTIMONY ⚡</button>
+                        <button type="button" class="secondary" onclick="goBack()">← RETREAT</button>
                     </div>
                 </form>
             </div>
@@ -390,13 +544,13 @@
         <!-- Quiz Screen (Player 2 guesses) -->
         <div id="quizScreen" class="screen">
             <div class="header">
-                <h1>🕵️ Detection Mode</h1>
-                <p>Which answer is human?</p>
+                <h1>👁️ DETECTION MODE 👁️</h1>
+                <p>IDENTIFY THE AUTHENTIC RESPONSE</p>
             </div>
 
             <div class="content">
                 <div class="progress-container">
-                    <div class="progress-label" id="progressText">Question 1 of 10</div>
+                    <div class="progress-label" id="progressText">TRIAL 1 OF 10</div>
                     <div class="progress-bar">
                         <div class="progress-fill" id="progressFill"></div>
                     </div>
@@ -407,7 +561,7 @@
                 <div class="options-container" id="optionsContainer"></div>
 
                 <div class="button-group">
-                    <button onclick="submitGuess()">✓ Submit</button>
+                    <button onclick="submitGuess()">⚡ SUBMIT ⚡</button>
                 </div>
             </div>
         </div>
@@ -415,21 +569,21 @@
         <!-- Results Screen -->
         <div id="resultsScreen" class="screen">
             <div class="header">
-                <h1>🏆 Results</h1>
-                <p>Quiz Complete!</p>
+                <h1>⚔️ FINAL JUDGMENT ⚔️</h1>
+                <p>THE TRIAL CONCLUDES</p>
             </div>
 
             <div class="content">
                 <div class="score-section">
-                    <div class="score-label">Your Detection Accuracy</div>
+                    <div class="score-label">YOUR DETECTION MASTERY</div>
                     <div class="score-number" id="scoreNumber">0%</div>
-                    <div class="score-detail" id="scoreDetail">0 out of 10 correct</div>
+                    <div class="score-detail" id="scoreDetail">0 out of 10 detected</div>
                 </div>
 
                 <div class="score-details" id="scoreMessage"></div>
 
                 <div class="button-group">
-                    <button onclick="restartGame()">🔄 Play Again</button>
+                    <button onclick="restartGame()">🔄 RETURN TO ABYSS 🔄</button>
                 </div>
             </div>
         </div>
@@ -456,7 +610,7 @@
                 renderSetupScreen();
                 showScreen('setupScreen');
             } catch (error) {
-                alert('Error loading questions. Make sure the backend is running on http://localhost:5000');
+                alert('⚠️ TRANSMISSION FAILED. The backend awakens on http://localhost:5000. Ensure it stirs.');
             }
         }
 
@@ -469,7 +623,7 @@
                 div.className = 'question-input';
                 
                 const label = document.createElement('label');
-                label.textContent = `Question ${idx + 1}: ${question}`;
+                label.textContent = `INQUIRY ${idx + 1}: ${question}`;
                 
                 const textarea = document.createElement('textarea');
                 textarea.id = `answer_${idx}`;
@@ -487,7 +641,7 @@
             for (let i = 0; i < questions.length; i++) {
                 const answer = document.getElementById(`answer_${i}`).value.trim();
                 if (!answer) {
-                    alert(`Please answer question ${i + 1}`);
+                    alert(`⚡ INCOMPLETE RITUAL. Question ${i + 1} demands your truth. Speak.`);
                     return;
                 }
                 humanAnswers[i] = answer;
@@ -504,7 +658,7 @@
                 currentQuestion = 1;
                 loadQuestion();
             } catch (error) {
-                alert('Error starting quiz: ' + error.message);
+                alert('⚠️ RITUAL COLLAPSED. ' + error.message);
             }
         }
 
@@ -518,14 +672,14 @@
                 const data = await res.json();
 
                 if (data.error) {
-                    alert(data.error);
+                    alert('☠️ ' + data.error);
                     return;
                 }
 
                 // Update progress
                 const progress = (data.question_number / 10) * 100;
                 document.getElementById('progressFill').style.width = progress + '%';
-                document.getElementById('progressText').textContent = `Question ${data.question_number} of 10`;
+                document.getElementById('progressText').textContent = `TRIAL ${data.question_number} OF 10`;
 
                 // Display question
                 document.getElementById('questionText').textContent = data.question;
@@ -545,7 +699,7 @@
 
                 showScreen('quizScreen');
             } catch (error) {
-                alert('Error loading question: ' + error.message);
+                alert('⚠️ THE VOID REJECTS YOU. ' + error.message);
             }
         }
 
@@ -557,7 +711,7 @@
 
         async function submitGuess() {
             if (!selectedAnswer) {
-                alert('Please select an answer');
+                alert('⚡ YOUR JUDGMENT CANNOT BE VOID. Select an answer from the shadows.');
                 return;
             }
 
@@ -576,24 +730,24 @@
                     loadQuestion();
                 }
             } catch (error) {
-                alert('Error submitting answer: ' + error.message);
+                alert('⚠️ THE CONNECTION FRAYS. ' + error.message);
             }
         }
 
         function showResults(score) {
             const percentage = Math.round((score / 10) * 100);
             document.getElementById('scoreNumber').textContent = percentage + '%';
-            document.getElementById('scoreDetail').textContent = `${score} out of 10 correct`;
+            document.getElementById('scoreDetail').textContent = `${score} out of 10 trials survived`;
             
             let message = '';
             if (percentage >= 80) {
-                message = '🎉 Excellent! You have strong human intuition.';
+                message = '⚔️ MASTERY ACHIEVED. Your human intuition pierces the veil of artifice.';
             } else if (percentage >= 60) {
-                message = '👍 Good job! You spotted most of the humans.';
+                message = '✨ CONSIDERABLE SKILL. The boundaries blur, but you have glimpsed the truth.';
             } else if (percentage >= 40) {
-                message = '🤔 Not bad! AI is tricky.';
+                message = '❓ THE VOID REVEALS ITS SECRETS SLOWLY. You walk the line between worlds.';
             } else {
-                message = '🤖 AI fooled you! Try again to improve your detection skills.';
+                message = '💀 THE MACHINES HAVE CONSUMED YOU. Assimilated. Try again, if you dare.';
             }
             
             document.getElementById('scoreMessage').textContent = message;
