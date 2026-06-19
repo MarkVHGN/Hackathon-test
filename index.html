@@ -3,7 +3,424 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reverse Turing Detective</title>
+    <title>Reverse Turing Detective - Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 10px 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #ddd;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #ccc;
+        }
+
+        .btn-option {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 20px;
+            margin: 15px 0;
+            border: 3px solid #ddd;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+        }
+
+        .btn-option:hover {
+            border-color: #667eea;
+            background: #f9f9f9;
+        }
+
+        .btn-option.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 1em;
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .question-label {
+            font-weight: bold;
+            color: #333;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .progress {
+            background: #f0f0f0;
+            height: 10px;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        .score {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .result-good {
+            color: #28a745;
+        }
+
+        .result-bad {
+            color: #dc3545;
+        }
+
+        .question-number {
+            color: #999;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .instructions {
+            background: #f0f8ff;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .instructions h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Reverse Turing Detective</h1>
+            <p>Quiz Edition: Spot the Human Answers</p>
+        </div>
+
+        <div class="content">
+            <!-- Start Screen (Player 1 enters answers) -->
+            <div id="setupScreen" class="screen active">
+                <div class="instructions">
+                    <h3>📝 Player 1: Enter Your Answers</h3>
+                    <p>Player 1, answer these 10 questions. Then pass the device to Player 2 to guess which answers are human!</p>
+                </div>
+
+                <form id="answersForm">
+                    <div id="answersContainer"></div>
+                    <div class="controls">
+                        <button type="button" class="btn" onclick="startQuiz()">▶️ Start Quiz (Player 2 Guesses)</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Quiz Screen (Player 2 guesses) -->
+            <div id="quizScreen" class="screen">
+                <div class="question-number">Question <span id="questionNum">1</span> / 10</div>
+                <div class="progress">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+
+                <h2 id="questionText" style="margin: 30px 0; color: #333;"></h2>
+
+                <div id="optionsContainer"></div>
+
+                <div class="controls">
+                    <button class="btn" onclick="submitAnswer()">✓ Next Question</button>
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div id="resultsScreen" class="screen">
+                <h2 style="text-align: center; margin-bottom: 30px;">🎯 Final Results</h2>
+                
+                <div class="score" id="scoreDisplay"></div>
+                <p style="text-align: center; color: #666; margin-bottom: 30px;">You correctly identified <span id="scoreText"></span> human answers out of 10!</p>
+
+                <div id="answersReview" style="margin: 30px 0;"></div>
+
+                <div class="controls">
+                    <button class="btn" onclick="restartGame()">🔄 Play Again</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api/quiz';
+        let currentQuiz = null;
+        let questions = [];
+        let selectedAnswer = null;
+
+        // Load questions on page load
+        async function loadQuestions() {
+            try {
+                const res = await fetch(`${API_BASE}/questions`);
+                const data = await res.json();
+                questions = data.questions;
+                renderSetupScreen();
+            } catch (error) {
+                alert('Error loading questions. Make sure backend is running on http://localhost:5000');
+            }
+        }
+
+        function renderSetupScreen() {
+            const container = document.getElementById('answersContainer');
+            container.innerHTML = '';
+
+            questions.forEach((q, idx) => {
+                const label = document.createElement('div');
+                label.className = 'question-label';
+                label.textContent = `${idx + 1}. ${q}`;
+                container.appendChild(label);
+
+                const textarea = document.createElement('textarea');
+                textarea.id = `answer_${idx}`;
+                textarea.placeholder = 'Type your answer here...';
+                container.appendChild(textarea);
+            });
+        }
+
+        async function startQuiz() {
+            // Collect answers
+            const humanAnswers = {};
+            for (let i = 0; i < questions.length; i++) {
+                const answer = document.getElementById(`answer_${i}`).value.trim();
+                if (!answer) {
+                    alert(`Please answer all questions!`);
+                    return;
+                }
+                humanAnswers[i] = answer;
+            }
+
+            // Start quiz
+            try {
+                const res = await fetch(`${API_BASE}/start`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ human_answers: humanAnswers })
+                });
+                const data = await res.json();
+                currentQuiz = data.quiz_id;
+                loadNextQuestion();
+            } catch (error) {
+                alert('Error starting quiz: ' + error.message);
+            }
+        }
+
+        async function loadNextQuestion() {
+            try {
+                const res = await fetch(`${API_BASE}/get-question`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ quiz_id: currentQuiz })
+                });
+                const data = await res.json();
+
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+
+                document.getElementById('setupScreen').classList.remove('active');
+                document.getElementById('quizScreen').classList.add('active');
+
+                document.getElementById('questionNum').textContent = data.question_number;
+                document.getElementById('questionText').textContent = data.question;
+
+                const container = document.getElementById('optionsContainer');
+                container.innerHTML = '';
+                selectedAnswer = null;
+
+                ['A', 'B', 'C'].forEach(letter => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'btn-option';
+                    btn.textContent = `${letter}. ${data.options[letter]}`;
+                    btn.onclick = () => selectAnswer(letter, btn);
+                    container.appendChild(btn);
+                });
+
+                // Update progress bar
+                const progress = (data.question_number / 10) * 100;
+                document.getElementById('progressBar').style.width = progress + '%';
+            } catch (error) {
+                alert('Error loading question: ' + error.message);
+            }
+        }
+
+        function selectAnswer(letter, element) {
+            document.querySelectorAll('.btn-option').forEach(e => e.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedAnswer = letter;
+        }
+
+        async function submitAnswer() {
+            if (!selectedAnswer) {
+                alert('Please select an answer!');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/check-answer`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ quiz_id: currentQuiz, answer: selectedAnswer })
+                });
+                const data = await res.json();
+
+                if (data.is_complete) {
+                    showResults();
+                } else {
+                    loadNextQuestion();
+                }
+            } catch (error) {
+                alert('Error submitting answer: ' + error.message);
+            }
+        }
+
+        async function showResults() {
+            // Fetch final results
+            const res = await fetch(`${API_BASE}/get-question`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ quiz_id: currentQuiz })
+            });
+
+            document.getElementById('quizScreen').classList.remove('active');
+            document.getElementById('resultsScreen').classList.add('active');
+
+            // Get stored results from sessionStorage or make another call
+            const score = localStorage.getItem(`quiz_${currentQuiz}_score`) || 0;
+            const finalScore = Math.max(score, 0);
+
+            const scorePercent = Math.round((finalScore / 10) * 100);
+            const className = finalScore >= 7 ? 'result-good' : finalScore >= 5 ? '' : 'result-bad';
+
+            document.getElementById('scoreDisplay').innerHTML = `<span class="${className}">${finalScore}/10</span>`;
+            document.getElementById('scoreText').textContent = finalScore;
+        }
+
+        function restartGame() {
+            document.getElementById('setupScreen').classList.add('active');
+            document.getElementById('resultsScreen').classList.remove('active');
+            currentQuiz = null;
+            selectedAnswer = null;
+            renderSetupScreen();
+            window.scrollTo(0, 0);
+        }
+
+        // Load on page load
+        loadQuestions();
+    </script>
+</body>
+</html>
     <style>
         * {
             margin: 0;
@@ -331,10 +748,17 @@
         <div class="content">
             <!-- Start Screen -->
             <div id="startScreen" class="start-screen">
-                <h2>Welcome to the Game</h2>
-                <p>One of the five suspects is human. The other four responses are AI-generated.</p>
-                <p>You have 10 turns to ask questions and gather information.</p>
-                <p>Use your intuition to spot who's really human!</p>
+                <h2>Welcome to Reverse Turing Detective</h2>
+                <p>One of the five suspects is a REAL HUMAN. The other four are AI-generated.</p>
+                <p><strong>Your mission:</strong> Ask each suspect questions and identify who is human!</p>
+                <p style="background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                    <strong>How to play:</strong><br>
+                    1️⃣ Pick a suspect and ask them a question<br>
+                    2️⃣ After each response, mark it as <strong>"Human"</strong> or <strong>"AI"</strong> to track your suspicions<br>
+                    3️⃣ You have 10 interactions to gather evidence<br>
+                    4️⃣ When ready, vote on who you think is the HUMAN<br>
+                    5️⃣ Find out if you were right!
+                </p>
                 <button class="btn" onclick="startGame()">Start Game</button>
             </div>
 
@@ -360,19 +784,29 @@
 
                 <div id="responseContainer"></div>
 
+                <div id="assessmentButtons" style="display:none; margin: 20px 0;">
+                    <p style="margin-bottom: 15px; color: #333; font-weight: bold;">Is this response from a HUMAN or AI?</p>
+                    <div class="controls">
+                        <button class="btn" onclick="markAsHuman()">👤 Human Response</button>
+                        <button class="btn btn-secondary" onclick="markAsAI()">🤖 AI Response</button>
+                    </div>
+                </div>
+
+                <div id="assessmentHistory" style="margin: 20px 0;"></div>
+
                 <div class="controls">
-                    <button class="btn" onclick="proceedToVote()" id="voteBtn" style="display:none;">Cast Your Vote</button>
+                    <button class="btn" onclick="proceedToVote()" id="voteBtn" style="display:none;">🎯 Vote on Who is Human</button>
                 </div>
             </div>
 
             <!-- Voting Screen -->
             <div id="votingScreen" class="voting-screen">
-                <h2>Who is the human?</h2>
-                <p style="margin-bottom: 30px;">Make your final decision:</p>
+                <h2>🎯 Final Decision</h2>
+                <p style="margin-bottom: 30px; font-size: 1.1em; color: #333;">Which ONE suspect is actually HUMAN?<br><small>(The other 4 are AI-generated)</small></p>
                 <div class="suspect-grid" id="votingSuspectGrid"></div>
                 <div class="controls">
-                    <button class="btn" onclick="submitVote()" id="submitVoteBtn">Submit Vote</button>
-                    <button class="btn btn-secondary" onclick="backToGame()">Back</button>
+                    <button class="btn" onclick="submitVote()">🎯 Submit My Vote</button>
+                    <button class="btn btn-secondary" onclick="backToGame()">← Back to Questioning</button>
                 </div>
             </div>
 
@@ -383,6 +817,10 @@
                     <h4>The Human Was:</h4>
                     <div class="name" id="humanName"></div>
                     <div class="role" id="humanRole"></div>
+                </div>
+                <div style="background: #f9f9f9; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: left;">
+                    <h4 style="margin-bottom: 10px;">Your Assessment Strategy:</h4>
+                    <div id="assessmentSummary"></div>
                 </div>
                 <button class="btn" onclick="restartGame()">Play Again</button>
             </div>
@@ -395,7 +833,9 @@
         let selectedSuspect = null;
         let askedQuestions = new Set();
         let availableQuestions = [];
-
+        let lastResponse = null;
+        let assessments = {}; // Track assessments per suspect
+        
         // Check if backend is running
         async function checkBackend() {
             try {
@@ -414,7 +854,7 @@
                 // Check if backend is running
                 const backendRunning = await checkBackend();
                 if (!backendRunning) {
-                    alert('Error: Backend server is not running.\n\nPlease start it with: python game_backend.py\n\nThe server should run on http://localhost:5000');
+                    alert('Error: Backend server is not running.\n\nPlease start it with: py game_backend.py\n\nThe server should run on http://localhost:5000');
                     return;
                 }
 
@@ -446,6 +886,7 @@
                 currentGame = data;
                 askedQuestions.clear();
                 selectedSuspect = null;
+                assessments = {};
 
                 renderGameScreen();
             } catch (error) {
@@ -460,9 +901,11 @@
             document.getElementById('resultScreen').style.display = 'none';
             document.getElementById('gameScreen').style.display = 'block';
             document.getElementById('voteBtn').style.display = 'none';
+            document.getElementById('assessmentButtons').style.display = 'none';
 
             renderSuspects();
             renderQuestions();
+            renderAssessmentHistory();
             updateStats();
         }
 
@@ -536,6 +979,12 @@
                 if (res.ok) {
                     askedQuestions.add(question);
                     currentGame.turns_remaining = data.turns_remaining;
+                    lastResponse = {
+                        suspect_id: selectedSuspect.id,
+                        suspect_name: data.suspect_name,
+                        question: question,
+                        response: data.response
+                    };
                     
                     const responseContainer = document.getElementById('responseContainer');
                     responseContainer.innerHTML = `
@@ -544,6 +993,9 @@
                             <div class="response-text">"${data.response}"</div>
                         </div>
                     `;
+
+                    // Show assessment buttons
+                    document.getElementById('assessmentButtons').style.display = 'block';
 
                     renderQuestions();
                     updateStats();
@@ -558,6 +1010,48 @@
                 console.error('Error asking question:', error);
                 alert('Error asking question:\n\n' + error.message);
             }
+        }
+
+        function markAsHuman() {
+            if (!lastResponse) return;
+            assessments[lastResponse.suspect_id] = 'human';
+            renderAssessmentHistory();
+            document.getElementById('responseContainer').innerHTML = '';
+            document.getElementById('assessmentButtons').style.display = 'none';
+        }
+
+        function markAsAI() {
+            if (!lastResponse) return;
+            assessments[lastResponse.suspect_id] = 'ai';
+            renderAssessmentHistory();
+            document.getElementById('responseContainer').innerHTML = '';
+            document.getElementById('assessmentButtons').style.display = 'none';
+        }
+
+        function renderAssessmentHistory() {
+            const container = document.getElementById('assessmentHistory');
+            const assessmentEntries = Object.entries(assessments);
+            
+            if (assessmentEntries.length === 0) {
+                container.innerHTML = '<p style="color: #999; font-size: 0.9em;">Your assessments will appear here</p>';
+                return;
+            }
+
+            let html = '<div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px;"><strong>Your Assessments:</strong><div style="margin-top: 10px;">';
+            
+            assessmentEntries.forEach(([suspectId, assessment]) => {
+                const suspect = currentGame.suspects.find(s => s.id === suspectId);
+                if (suspect) {
+                    const icon = assessment === 'human' ? '👤' : '🤖';
+                    const label = assessment === 'human' ? 'HUMAN' : 'AI';
+                    html += `<div style="padding: 8px; margin: 5px 0; background: white; border-radius: 5px; border-left: 4px solid ${assessment === 'human' ? '#28a745' : '#007bff'};">
+                        ${icon} <strong>${suspect.name}</strong>: ${label}
+                    </div>`;
+                }
+            });
+            
+            html += '</div></div>';
+            container.innerHTML = html;
         }
 
         function updateStats() {
@@ -596,7 +1090,7 @@
 
         async function submitVote() {
             if (!selectedSuspect) {
-                alert('Please select a suspect');
+                alert('Please select who you think is the HUMAN');
                 return;
             }
 
@@ -624,16 +1118,38 @@
             document.getElementById('resultScreen').style.display = 'block';
 
             const resultBox = document.getElementById('resultBox');
+
             if (data.correct) {
                 resultBox.className = 'result-box correct';
-                resultBox.innerHTML = '<h3>🎉 Correct!</h3><p>You spotted the human!</p>';
+                resultBox.innerHTML = '<h3>🎉 CORRECT!</h3><p>You successfully identified the human! Congratulations!</p>';
             } else {
                 resultBox.className = 'result-box incorrect';
-                resultBox.innerHTML = `<h3>❌ Incorrect</h3><p>You guessed ${selectedSuspect.name}, but that wasn't right.</p>`;
+                resultBox.innerHTML = `<h3>❌ Incorrect</h3><p>You guessed <strong>${selectedSuspect.name}</strong> was human, but they were AI.</p>`;
             }
 
             document.getElementById('humanName').textContent = data.human_was.name;
             document.getElementById('humanRole').textContent = data.human_was.role;
+
+            // Show assessment summary
+            let summaryHtml = '';
+            if (Object.keys(assessments).length > 0) {
+                summaryHtml = '<ul style="margin: 0;">';
+                currentGame.suspects.forEach(suspect => {
+                    if (assessments[suspect.id]) {
+                        const assessment = assessments[suspect.id];
+                        const isCorrect = (assessment === 'human' && suspect.id === data.human_was.id) || 
+                                        (assessment === 'ai' && suspect.id !== data.human_was.id);
+                        const icon = isCorrect ? '✓' : '✗';
+                        const color = isCorrect ? '#28a745' : '#dc3545';
+                        const label = assessment === 'human' ? 'HUMAN' : 'AI';
+                        summaryHtml += `<li style="color: ${color}; margin: 5px 0;"><strong>${icon} ${suspect.name}:</strong> You marked as ${label}</li>`;
+                    }
+                });
+                summaryHtml += '</ul>';
+            } else {
+                summaryHtml = '<p style="color: #999;">You did not mark any responses during the game.</p>';
+            }
+            document.getElementById('assessmentSummary').innerHTML = summaryHtml;
         }
 
         function backToGame() {

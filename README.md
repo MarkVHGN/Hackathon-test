@@ -1,84 +1,109 @@
-# 🔍 Reverse Turing Detective
+# 🔍 Reverse Turing Detective - Quiz Edition
 
-A fun game where you need to spot the human among AI-generated responses!
+A fun 2-player game where Player 1 answers questions as themselves, and Player 2 tries to identify which answers are human vs AI-generated.
 
 ## Game Concept
 
-You interview 5 suspects. 4 are AI-generated, 1 is human-written. Can you detect who's really human?
+**The Challenge:** Can you distinguish human answers from AI responses?
 
-### Mechanics
-- Ask questions to suspects
-- Limited to 10 turns
-- Vote on who you think is human
-- Try to identify human patterns vs AI patterns
+- **Player 1** answers 10 questions authentically
+- **Player 2** sees multiple choice answers (2 AI + 1 Human) and guesses which is human
+- Score: How many did you get right out of 10?
+
+## Game Flow
+
+### Player 1: Provide Answers
+1. Answer all 10 questions as yourself
+2. Be genuine - this is what Player 2 will try to identify!
+3. Pass the device to Player 2
+
+### Player 2: Guess
+1. For each question, you'll see 3 options (A, B, C)
+2. 2 are AI-generated, 1 is from Player 1
+3. Select which one you think is the human answer
+4. Get instant feedback
+5. Final score: How many did you identify correctly?
+
+## Questions
+
+1. What's your biggest fear?
+2. What did you have for breakfast?
+3. Tell me about your most memorable moment.
+4. How do you handle stress?
+5. What's your ideal weekend?
+6. What's a hobby you're passionate about?
+7. Describe a time you failed. What did you learn?
+8. What's something that always makes you laugh?
+9. Where do you see yourself in 5 years?
+10. What's your most unpopular opinion?
 
 ## Setup
 
 ### Requirements
 - Python 3.7+
-- Node.js (optional, for serving static files)
+- No external dependencies needed!
 
 ### Installation
 
-1. Install Python dependencies:
+1. **Start the backend:**
 ```bash
-pip install -r requirements.txt
+cd c:\Users\tck1wmb\Repos\Hackathon-test
+py game_backend.py
 ```
 
-2. Run the Flask backend:
+Server will run on `http://localhost:5000`
+
+2. **Start the web server (new terminal):**
 ```bash
-python game_backend.py
+cd c:\Users\tck1wmb\Repos\Hackathon-test
+py -m http.server 8000
 ```
 
-The server will start on `http://localhost:5000`
-
-3. Open `index.html` in your browser or serve it:
-```bash
-# Using Python
-python -m http.server 8000
-# Then visit http://localhost:8000
+3. **Open the game:**
+```
+http://localhost:8000
 ```
 
-## How to Play
+## How It Works
 
-1. Start the game
-2. Read the suspect profiles
-3. Choose a suspect to question
-4. Select a question from the available options
-5. Read their response carefully
-6. Ask more questions to gather information
-7. When you run out of turns or feel confident, cast your vote
-8. Choose who you think is the human
-9. See if you were right!
+- **Human answers** come directly from Player 1
+- **AI options** are pre-generated alternative responses to make it challenging
+- **Scoring** is based on how many human answers Player 2 correctly identifies
+- **Perfect game** = 10/10 correct identifies
 
-## Game Features
+## Gameplay Tips for Player 2
 
-- 5 unique suspects with different backgrounds
-- 5 different questions to ask
-- Randomized human suspect each game
-- Distinctive human vs AI response patterns
-- Responsive web interface
-- Simple REST API backend
+- Look for **specificity and personal details** - humans tend to be more specific
+- **AI can be too formal** - check for overly structured responses
+- **Emotional authenticity** - genuine human emotion is hard for AI to fake
+- **Casual language** - humans use "um," "haha," etc. more often
+- **Contradictions** - humans are more self-aware about their own quirks
 
 ## Files
 
-- `game_backend.py` - Flask backend server
-- `index.html` - Game UI and client-side logic
-- `requirements.txt` - Python dependencies
+- `game_backend.py` - Quiz server (Python HTTP server, no dependencies)
+- `index.html` - Game UI
+- `requirements.txt` - Documentation (no packages needed!)
 
-## Tips for Finding the Human
+## Architecture
 
-- Look for natural conversation patterns
-- Humans are more likely to be casual, self-aware, and include personal anecdotes
-- AI tends to be more structured and formal
-- Watch for emotional authenticity
-- Notice inconsistencies or over-explanations
+- **Backend**: Pure Python built-in HTTP server
+- **Frontend**: Vanilla JavaScript
+- **Data**: Pre-generated AI responses + real-time Player 1 input
+- **Scoring**: Real-time feedback on correct/incorrect guesses
 
 ## API Endpoints
 
-- `POST /api/game/start` - Start a new game
-- `POST /api/game/<game_id>/ask` - Ask a question
-- `POST /api/game/<game_id>/vote` - Submit your vote
-- `GET /api/questions` - Get available questions
+- `GET /api/quiz/questions` - Get all 10 questions
+- `POST /api/quiz/start` - Start new quiz with Player 1 answers
+- `POST /api/quiz/get-question` - Get next multiple choice question
+- `POST /api/quiz/check-answer` - Verify Player 2's answer and get score
 
-Have fun! 🕵️
+## Fun Facts
+
+- This is **completely peer-to-peer** - no internet needed, runs locally
+- **Zero dependencies** - pure Python standard library
+- **Instant feedback** - know immediately if you're right
+- **Different every time** - questions are shuffled, options are randomized
+
+Have fun spotting the human! 🕵️

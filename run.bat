@@ -1,9 +1,8 @@
 @echo off
-echo Starting Reverse Turing Detective...
+echo Starting Reverse Turing Detective Backend...
 echo.
-echo Making sure dependencies are installed...
-pip install -r requirements.txt
+echo NO installation needed - using Python built-in modules
 echo.
-echo Starting Flask backend on http://localhost:5000
+echo Starting server on http://localhost:5000
 echo.
-python game_backend.py
+py game_backend.py
